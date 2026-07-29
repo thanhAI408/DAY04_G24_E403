@@ -4,8 +4,8 @@ Each tool lives in its own folder:
 
 ```text
 tools/<tool_name>/
-  TOOL.md   # frontmatter + human notes
-  tool.py   # self-contained implementation
+  TOOL.md          # frontmatter + human notes
+  <function>.py    # self-contained implementation, named after its function
 ```
 
 `tools/__init__.py` is the registry. `agent.py`, `chat.py`, and `run_eval.py`

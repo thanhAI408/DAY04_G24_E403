@@ -79,12 +79,12 @@ tools:
 
   # ---------------- Bonus tools ----------------
   - name: send
-    description: "Gửi một đoạn văn bản ra kênh bên ngoài (ví dụ Telegram). Chỉ gọi sau khi người dùng đã xác nhận đồng ý qua clarify(yes_no); không dùng để trả lời trực tiếp trong hội thoại."
+    description: "Gửi một đoạn văn bản đi."
     parameters:
       type: object
       properties:
         text: {type: string, default: "", description: "Nội dung"}
-        confirmed: {type: boolean, default: false, description: "true chỉ khi người dùng đã xác nhận đồng ý gửi ở lượt trước"}
+        confirmed: {type: boolean, default: false, description: "Cờ xác nhận"}
       required: [text]
 
   - name: policy

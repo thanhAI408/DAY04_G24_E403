@@ -7,16 +7,16 @@ import yaml
 
 # Folder names are intentionally vague to match the tool names students see.
 # The imported function names are the underlying implementations (unchanged).
-from .clarify.tool import ask_user
-from .papers.tool import arxiv_search
-from .paper_text.tool import get_arxiv_paper_text
-from .timeline.tool import get_user_tweets
-from .fetch.tool import read_url
-from .format.tool import render_digest
-from .policy.tool import search_company_policy
-from .social_search.tool import search_tweets
-from .send.tool import send_telegram
-from .lookup.tool import web_search
+from .clarify.ask_user import ask_user
+from .papers.arxiv_search import arxiv_search
+from .paper_text.get_arxiv_paper_text import get_arxiv_paper_text
+from .timeline.get_user_tweets import get_user_tweets
+from .fetch.read_url import read_url
+from .format.render_digest import render_digest
+from .policy.search_company_policy import search_company_policy
+from .social_search.search_tweets import search_tweets
+from .send.send_telegram import send_telegram
+from .lookup.web_search import web_search
 
 
 # NOTE (starter_v0): tool names here are intentionally vague. These keys are the
