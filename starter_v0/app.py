@@ -21,6 +21,7 @@ from versioning import artifact_version_dict, build_artifact_version
 ROOT = Path(__file__).parent
 ARTIFACTS = ROOT / "artifacts"
 RUNS = ROOT / "runs"
+TRANSCRIPTS = ROOT / "transcripts"
 load_lab_env(ROOT)
 app = FastAPI(title="G24 Research Studio")
 app.mount("/public", StaticFiles(directory=ROOT / "public"), name="public")
@@ -80,7 +81,7 @@ def runs() -> dict[str, Any]:
     for path in sorted(RUNS.glob("*.json")):
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
-            result.append(sanitize({"filename": path.name, "version": data.get("version"), "artifact_version": data.get("artifact_version"), "suite": data.get("suite"), "metrics": data.get("metrics", {})}))
+            result.append(sanitize({"filename": path.name, "version": data.get("version"), "artifact_version": data.get("artifact_version"), "suite": data.get("suite"), "provider": data.get("provider"), "model": data.get("model"), "metrics": data.get("summary", {})}))
         except (OSError, json.JSONDecodeError):
             continue
     return {"runs": result}
@@ -97,6 +98,31 @@ def run_detail(filename: str) -> dict[str, Any]:
         return sanitize(json.loads(path.read_text(encoding="utf-8")))
     except json.JSONDecodeError:
         raise HTTPException(status_code=500, detail="Invalid run JSON")
+
+
+@app.get("/api/transcripts")
+def transcripts() -> dict[str, Any]:
+    result = []
+    for path in sorted(TRANSCRIPTS.glob("*.transcript.json")):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            result.append(sanitize({"filename": path.name, "transcript_id": data.get("transcript_id"), "provider": data.get("provider"), "model": data.get("model"), "artifact_version": data.get("artifact_version"), "turn_count": len(data.get("turns", []))}))
+        except (OSError, json.JSONDecodeError):
+            continue
+    return {"transcripts": result}
+
+
+@app.get("/api/transcripts/{filename}")
+def transcript_detail(filename: str) -> dict[str, Any]:
+    if Path(filename).name != filename or not filename.endswith(".transcript.json"):
+        raise HTTPException(status_code=400, detail="Invalid transcript filename")
+    path = TRANSCRIPTS / filename
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail="Transcript not found")
+    try:
+        return sanitize(json.loads(path.read_text(encoding="utf-8")))
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid transcript JSON")
 
 
 @app.get("/", response_class=HTMLResponse)

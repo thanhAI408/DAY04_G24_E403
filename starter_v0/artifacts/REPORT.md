@@ -8,6 +8,16 @@ Deployment: local UI verified at `http://127.0.0.1:8000`; no Vercel URL claimed 
 
 G24 Research Studio is a server-side research assistant for public web news, X/Twitter account and topic search, URL reading, digest formatting, internal policy lookup, arXiv discovery, and duplicate-source removal.
 
+### Demo order and presenter script
+
+1. Open `http://127.0.0.1:8000` → **Demo Mode**. Run Scenario 1 and point to the `web_search` arguments.
+2. Run Scenario 2. Explain that turn 1 asks for the account and turn 2 maps Sam Altman to `sama` while preserving `limit=3`.
+3. Run Scenario 3. Explain that the model calls both public web and X tools, with `search_type=Top`.
+4. Open **Evidence** to show metrics loaded from real `runs/*.json`, direct run JSON links, rehearsal checklist and fallback transcripts.
+5. Use the separate Telegram challenge only if asked about write safety; it must stop at `ask_user(yes_no)` and never call `send_telegram`.
+
+Suggested opening: “Tôi sẽ không trình bày source code; tôi chỉ dùng ba scenario để chứng minh routing, missing-information handling, multi-tool behavior và evidence thật.”
+
 | Tool | Capability | New team tool? |
 |---|---|---|
 | `ask_user` | missing information and confirmation | no |
