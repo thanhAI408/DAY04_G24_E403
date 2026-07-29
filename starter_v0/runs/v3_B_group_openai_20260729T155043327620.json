@@ -1,0 +1,1232 @@
+{
+  "run_id": "v3_B_group_openai_20260729T155043327620",
+  "version": "v3",
+  "artifact_version": "v3+p081e27341fb6+t5e1284500aa6",
+  "prompt_hash": "081e27341fb60b4c82e6a19bd209aad9660ffac01a55bc0530848aee52d25570",
+  "tools_hash": "5e1284500aa696b729a385c2005027eb8e56ab0c7222dd272a54723afb6ffd10",
+  "phase": "B",
+  "suite": "group",
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "system_prompt": "C:\\Users\\ASUS\\Downloads\\DAY04_G24_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\ASUS\\Downloads\\DAY04_G24_E403\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_group.json",
+  "dataset_id": "day04_v3_research_group",
+  "dataset_role": "group",
+  "description": "Team eval for semantic research tools and confirmation boundaries.",
+  "generated_at": "2026-07-29T15:50:43",
+  "summary": {
+    "total_cases": 10,
+    "measured_cases": 10,
+    "provider_error_cases": 0,
+    "passed_cases": 9,
+    "case_accuracy": 0.9,
+    "tool_routing_accuracy": 0.9,
+    "argument_accuracy": 0.9,
+    "multiturn_accuracy": 0.8,
+    "failure_counts": {
+      "wrong_arg_value": 1
+    },
+    "observed_mismatch_counts": {
+      "extra_tool_call": 1
+    }
+  },
+  "results": [
+    {
+      "id": "G01_account_limit",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Explicit account mapping and limit preservation."
+      },
+      "input": "Lấy 4 bài đăng gần nhất của Sam Altman",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_user_tweets",
+            "args": {
+              "screenname": "sama",
+              "limit": 4
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_user_tweets",
+            "args": {
+              "screenname": "sama",
+              "limit": 4
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_user_tweets",
+          "args": {
+            "screenname": "sama",
+            "limit": 4
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "sama",
+            "items": [
+              {
+                "title": "wrong",
+                "summary": "wrong",
+                "url": "https://x.com/sama/status/2081832600591892712",
+                "source": "@sama",
+                "date": "Mon Jul 27 20:02:25 +0000 2026",
+                "metrics": {
+                  "favorites": 11315,
+                  "retweets": 284,
+                  "views": "2204737"
+                }
+              },
+              {
+                "title": "agreed feels big, i want a new kind of computer",
+                "summary": "agreed feels big, i want a new kind of computer",
+                "url": "https://x.com/sama/status/2081513071135346814",
+                "source": "@sama",
+                "date": "Sun Jul 26 22:52:43 +0000 2026",
+                "metrics": {
+                  "favorites": 8136,
+                  "retweets": 283,
+                  "views": "2400386"
+                }
+              },
+              {
+                "title": "chatgpt work is remarkable, and \"work\" undersells it.",
+                "summary": "chatgpt work is remarkable, and \"work\" undersells it.\n\nfrom my phone i sent:\n\n\"use all my chat history to figure out ideas for a long weekend trip with 8 friends, plan the best three options, make a full-stack site where the 9 of us can coordinate on what we would want to do in each place and decide where to go, and then after we get to group agreement make reservations. draft an email in my gmail i can send out to my friends when the site is ready.\"\n\nit...just worked.",
+                "url": "https://x.com/sama/status/2081396796174282900",
+                "source": "@sama",
+                "date": "Sun Jul 26 15:10:41 +0000 2026",
+                "metrics": {
+                  "favorites": 17423,
+                  "retweets": 573,
+                  "views": "3587314"
+                }
+              },
+              {
+                "title": "RT @gdb: stories like this should be told more",
+                "summary": "RT @gdb: stories like this should be told more",
+                "url": "https://x.com/sama/status/2081030523229728800",
+                "source": "@sama",
+                "date": "Sat Jul 25 14:55:15 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 170,
+                  "views": "44842"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G02_top_topic",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Topic search with Top mapping."
+      },
+      "input": "Tìm các bài phổ biến nhất về AI agents trên X",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_tweets",
+            "args": {
+              "query": "AI agents",
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "search_tweets",
+            "args": {
+              "query": "AI agents",
+              "search_type": "Top"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "search_tweets",
+          "args": {
+            "query": "AI agents",
+            "search_type": "Top"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "AI agents",
+            "search_type": "Top",
+            "items": [
+              {
+                "title": "That changes how an AI business system works.",
+                "summary": "That changes how an AI business system works.\n\nHere’s the setup:\n\n→ Drop one outcome into the Agent OS.\n\n→ Let Claude shape the rough idea.\n\n→ Review the plan once.\n\n→ Turn on Auto Mode.\n\n→ Let AFK Mode make sensible decisions.\n\n→ Return to the finished build in your gallery.\n\nYou stop approving every tiny step.\n\nClaude starts handling the full workflow.\n\nSave this video, you’ll build faster without babysitting AI.\n\nWant the SOP? DM me. 💬",
+                "url": "https://x.com/JulianGoldieSEO/status/2082377250536845352",
+                "source": "@JulianGoldieSEO",
+                "date": "Wed Jul 29 08:06:39 +0000 2026",
+                "metrics": {
+                  "favorites": 1,
+                  "retweets": 0,
+                  "views": "1391"
+                }
+              },
+              {
+                "title": "6 agent patterns for AI engineers:",
+                "summary": "6 agent patterns for AI engineers:\n\n(explained with usage)\n\n1) prompt chaining\n→ split the task into fixed steps, each one checking the last.\n→ use when the task decomposes cleanly and accuracy matters more than latency.\n\n2) routing\n→ classify the input first, then send it to the model or tool built for it.\n→ use when inputs fall into distinct classes that need different handling.\n\n3) parallelization\n→ run several calls at once and merge them, either by splitting the work or voting on the same question.\n→ use when subtasks are independent, or when one answer deserves several opinions.\n\n4) orchestrator-workers\n→ a lead model decides what the subtasks are at runtime, then delegates them.\n→ use when you cannot list the steps in advance.\n\n5) evaluator-optimizer\n→ one model writes, another grades, the loop repeats until it passes.\n→ use when you have clear criteria and iteration measurably helps.\n\n6) autonomous agent\n→ no fixed path. it plans, acts, reads feedback from the environment, and decides when it is done.\n→ use when the steps are unknowable and you can afford the cost and the blast radius.\n\nthe first five are workflows: you wrote the path. only the last one writes its own.\n\nmost production systems people call agents are pattern 1, 2, or 5 with good error handling.\n\nthis taxonomy is from Anthropic's own writeup on building effective agents.\n\nfull breakdown in the article below.",
+                "url": "https://x.com/hanakoxbt/status/2078979637804187793",
+                "source": "@hanakoxbt",
+                "date": "Sun Jul 19 23:05:45 +0000 2026",
+                "metrics": {
+                  "favorites": 1700,
+                  "retweets": 307,
+                  "views": "142762"
+                }
+              },
+              {
+                "title": "Hermes just released a major open-source AI agent update called Quicksilver. ",
+                "summary": "Hermes just released a major open-source AI agent update called Quicksilver. \n\nIt cuts response time by 80%, protects your work from crashes, and lets you run multiple specialized AI agents that automatically hand off tasks to each other. \n\nIt also connects to free AI models, so the whole setup costs nothing.",
+                "url": "https://x.com/JulianGoldieSEO/status/2082342913653330131",
+                "source": "@JulianGoldieSEO",
+                "date": "Wed Jul 29 05:50:13 +0000 2026",
+                "metrics": {
+                  "favorites": 5,
+                  "retweets": 1,
+                  "views": "1625"
+                }
+              },
+              {
+                "title": "FREE Hermes + OpenClaw AI Agents Course : Build &amp; Automate ANYTHING https://t.co/2nCjjlwdCm",
+                "summary": "FREE Hermes + OpenClaw AI Agents Course : Build &amp; Automate ANYTHING https://t.co/2nCjjlwdCm",
+                "url": "https://x.com/JulianGoldieSEO/status/2082371967081201799",
+                "source": "@JulianGoldieSEO",
+                "date": "Wed Jul 29 07:45:40 +0000 2026",
+                "metrics": {
+                  "favorites": 1,
+                  "retweets": 0,
+                  "views": "1029"
+                }
+              },
+              {
+                "title": "Google just dropped a 1-hour course on agentic engineering from scratch:  ",
+                "summary": "Google just dropped a 1-hour course on agentic engineering from scratch:  \n\n00:00 – How to build your first AI agent \n08:24 – Build agent memory (short, persistent, long) \n28:34 – Agentic loops, long-running AI agents \n40:04 – How to build MCP (MCP vs API) \n1:00:22 – Multi-agentic systems  \n\nThis 1-hour watch will replace 10 paid agentic courses on the internet.  \n\nBookmark this. Watch this weekend.",
+                "url": "https://x.com/Krishnasagrawal/status/2081784738826899530",
+                "source": "@Krishnasagrawal",
+                "date": "Mon Jul 27 16:52:14 +0000 2026",
+                "metrics": {
+                  "favorites": 132,
+                  "retweets": 26,
+                  "views": "8967"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G03_monthly_news",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "News topic and month timeframe normalization."
+      },
+      "input": "Tìm tin tức về robotics trong tháng này",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "web_search",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "web_search",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "web_search",
+          "args": {
+            "query": "robotics",
+            "topic": "news",
+            "timeframe": "month"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "robotics",
+            "topic": "news",
+            "timeframe": "month",
+            "items": [
+              {
+                "title": "ICRA 2026 Convenes Robotics Community in Vienna - Let's Data Science",
+                "url": "https://letsdatascience.com/news/icra-2026-convenes-robotics-community-in-vienna-06244688",
+                "source": "letsdatascience.com",
+                "summary": "The **2026 IEEE International Conference on Robotics and Automation (ICRA)** ran **June 1-5, 2026** in Vienna at Messe Wien, drawing thousands of researchers and companies to what Robohub's first-person recap calls a showcase increasingly focused on closing the gap between lab demonstrations and real-world deployment. In a plenary titled \"A Tale of Two Cultures: Can Agentic Coding Close the Gap?\", UC Berkeley's **Ken Goldberg** argued that robot manipulation remains data-starved compared to vision-language models, noting that training a modern VLM takes the equivalent of roughly **100,000 years** of physical experience. On the exhibition floor, robotic hand dexterity, rather than humanoids, was the standout trend, exemplified by Chinese startup **TARS**'s DexHand, a 21-degree-of-freedom hand that won a Guinness World Record for wiring-harness insertion speed. For robotics practitioners, this recap is useful less as news and more as a snapshot of where the field's hardest open problems currently sit: not humanoid form factors, but data scarcity for manipulation and the mechanical/control gap in dexterous hands.",
+                "score": 0.45449692
+              },
+              {
+                "title": "AI² Robotics raises $735M at $3B valuation for wheeled humanoid robots - The Robot Report",
+                "url": "https://www.therobotreport.com/ai%C2%B2-robotics-raises-735m-3b-valuation-wheeled-humanoid-robots/",
+                "source": "therobotreport.com",
+                "summary": "# AI² Robotics raises $735M at $3B valuation for wheeled humanoid robots. By The Robot Report Staff |. AI² Robotics has raised about $735 million in a fresh financing round that pushed its valuation past 50 billion RMB, or about $2.8 billion U.S. The funding positions the Shenzhen-based company among the leaders of China’s fast-moving physical AI sector. The diverse investor base in AI² Robotics’ latest funding round reflects the strategic importance now placed on the technology, drawing capital from state-backed entities, industrial corporations, and financial institutions. AI² Robotics develops a wheeled mobile manipulator equipped with a humanoid torso and nimble five-fingered hands. The strategic decision to use a wheeled base over legged locomotion puts the company in the minority of Chinese firms developing humanoid-style robotics. The funding announcement comes on the heels of other recent funding events in the humanoid market, including the pending IPO by Agility, funding rounds for Apptronik and Neura, and the acquisition of Kinisi Robotics by Bear Robotics.",
+                "score": 0.45057756
+              },
+              {
+                "title": "The Amazing Robot Innovations At The Goodwood Future Lab - Forbes",
+                "url": "https://www.forbes.com/sites/bernardmarr/2026/07/24/the-amazing-robot-innovations-at-the-goodwood-future-lab/",
+                "source": "forbes.com",
+                "summary": "# The Amazing Robot Innovations At The Goodwood Future Lab. The Goodwood Festival of Speed's Future Lab offered a compelling look into robotics' future, showcasing how diverse robots could collaborate. OLO Robotics introduced a cloud platform simplifying robot programming with natural language, making automation accessible and enabling coordination of varied robot fleets. Enchanted Tools' Mirokaï robots, with their expressive, fox-like designs, demonstrated how personality fosters human acceptance in sensitive settings like hospitals. These innovations signal a shift from robotic spectacle to practical, everyday applications, emphasizing collaboration, accessibility, and human-robot comfort as robots integrate into our lives. A humanoid, a wheeled rover and a dog-like robot are trying to push a giant inflatable ball up a ramp. It sounds like an unusual science fiction comedy, yet at the Goodwood Festival of Speed, it offered a compelling glimpse of how robots could soon work together in the real world. Users can begin with a simulated robot in the cloud, test an application and transfer the same code to a physical machine.",
+                "score": 0.41819844
+              },
+              {
+                "title": "Samsung Electronics creates robotics division; ex-Hyundai executive to head strategy - Reuters",
+                "url": "https://www.reuters.com/world/asia-pacific/samsung-electronics-creates-robotics-division-key-part-growth-strategy-2026-07-21/",
+                "source": "reuters.com",
+                "summary": "Exclusive news, data and analytics for financial market professionals Learn more about Refinitiv. ## Browse World. ## Browse Business. ## Browse Markets. ## Browse Legal. SEOUL, July 21 (Reuters) - Samsung Electronics (005930.KS), opens new tab said on Tuesday it ​will set up a robotics division reporting directly ‌to the chief executive to accelerate development and commercialisation in the field and establish robotics as a growth engine. The South Korean conglomerate ​said the RX, or \"Robotics eXperience\", division will oversee its ​mid-to-long-term robotics strategy, core technology development and business ⁠execution, while expanding research capabilities at home and overseas. Samsung also said it plans ​to establish robotics research hubs in the U.S., China ​and Japan, where robotics technology is advancing rapidly, to strengthen competitiveness by ‌leveraging ⁠local ecosystems and expertise. *   #### World-Check, opens new tab. ### Browse. *   Media Center, opens new tab. *   Reuters News Agency, opens new tab. *   Reuters and AI, opens new tab.",
+                "score": 0.4024631
+              },
+              {
+                "title": "Rotterdam Hosts a Meeting Between Italian Companies and Benelux Industry Professionals with GSL Export - Robotics & Automation News",
+                "url": "https://roboticsandautomationnews.com/2026/07/28/rotterdam-hosts-a-meeting-between-italian-companies-and-benelux-industry-professionals-with-gsl-export/103647/",
+                "source": "roboticsandautomationnews.com",
+                "summary": "#### Robotics & Automation News publishes in-depth trend analysis on the future of drone logistics. # Robotics & Automation News. #### Manufacturing future: the best countries to start or relocate your tech startup in 2026. Since a robot could not detect the … [[Read More...] about AI-powered robot automates Serrano ham labeling for the first time](https://roboticsandautomationnews.com/2026/07/09/ai-powered-robot-automates-serrano-ham-labeling-for-the-first-time/103208/). Discover below … [[Read More...] about Manufacturing future: the best countries to start or relocate your tech startup in 2026](https://roboticsandautomationnews.com/2026/07/08/manufacturing-future-the-best-countries-to-start-or-relocate-your-tech-startup-in-2026/103188/). Doosan Robotics has launched a new AI-powered palletizing solution designed to help manufacturers automate palletizing while reducing engineering complexity and improving flexibility for changing … [[Read More...] about Doosan Robotics launches AI-powered palletizing solution for high-mix manufacturing](https://roboticsandautomationnews.com/2026/07/09/doosan-robotics-launches-ai-powered-palletizing-solution-for-high-mix-manufacturing/103197/). Kawasaki Robotics showcased a range of advanced automation technologies at Automate 2026 in Chicago, demonstrating how robotics, AI, machine learning, vision systems, and real-time control are … [[Read More...] about Kawasaki Robotics showcases 8-axis Physical AI robot and intelligent automation technologies at Automate 2026](https://roboticsandautomationnews.com/2026/06/26/kawasaki-robotics-showcases-8-axis-physical-ai-robot-and-intelligent-automation-technologies-at-automate-2026/102869/).",
+                "score": 0.39389837
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G04_missing_url",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Missing concrete URL asks for text clarification."
+      },
+      "input": "Đọc và tóm tắt bài viết này giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "ask_user",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "ask_user",
+            "args": {
+              "question": "Bạn vui lòng cung cấp URL của bài viết mà bạn muốn tôi đọc và tóm tắt?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "ask_user",
+          "args": {
+            "question": "Bạn vui lòng cung cấp URL của bài viết mà bạn muốn tôi đọc và tóm tắt?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn vui lòng cung cấp URL của bài viết mà bạn muốn tôi đọc và tóm tắt?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G05_deduplicate",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": false,
+      "metadata": {
+        "what_it_tests": "Explicit deduplication routes to the team tool."
+      },
+      "input": "Loại các nguồn trùng lặp trong danh sách này",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "deduplicate_research_items",
+            "args": {}
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "deduplicate_research_items",
+            "args": {
+              "items": [
+                {
+                  "title": "AI in Healthcare: Opportunities and Challenges",
+                  "url": "https://example.com/ai-healthcare",
+                  "source": "Journal of AI Research",
+                  "summary": "An overview of how AI is transforming healthcare."
+                },
+                {
+                  "title": "AI in Healthcare: Opportunities and Challenges",
+                  "url": "https://example.com/ai-healthcare?utm_source=twitter",
+                  "source": "Journal of AI Research",
+                  "summary": "An overview of how AI is transforming healthcare."
+                },
+                {
+                  "title": "The Future of AI in Medicine",
+                  "url": "https://example.com/future-ai-medicine",
+                  "source": "Medical AI Journal",
+                  "summary": "Exploring the future applications of AI in medicine."
+                },
+                {
+                  "title": "AI in Healthcare: Opportunities and Challenges",
+                  "url": "https://example.com/ai-healthcare",
+                  "source": "Journal of AI Research",
+                  "summary": "An overview of how AI is transforming healthcare."
+                },
+                {
+                  "title": "AI in Healthcare: Opportunities and Challenges",
+                  "url": "https://example.com/ai-healthcare",
+                  "source": "Journal of AI Research",
+                  "summary": "An overview of how AI is transforming healthcare."
+                }
+              ]
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "deduplicate_research_items",
+          "args": {
+            "items": [
+              {
+                "title": "AI in Healthcare: Opportunities and Challenges",
+                "url": "https://example.com/ai-healthcare",
+                "source": "Journal of AI Research",
+                "summary": "An overview of how AI is transforming healthcare."
+              },
+              {
+                "title": "AI in Healthcare: Opportunities and Challenges",
+                "url": "https://example.com/ai-healthcare?utm_source=twitter",
+                "source": "Journal of AI Research",
+                "summary": "An overview of how AI is transforming healthcare."
+              },
+              {
+                "title": "The Future of AI in Medicine",
+                "url": "https://example.com/future-ai-medicine",
+                "source": "Medical AI Journal",
+                "summary": "Exploring the future applications of AI in medicine."
+              },
+              {
+                "title": "AI in Healthcare: Opportunities and Challenges",
+                "url": "https://example.com/ai-healthcare",
+                "source": "Journal of AI Research",
+                "summary": "An overview of how AI is transforming healthcare."
+              },
+              {
+                "title": "AI in Healthcare: Opportunities and Challenges",
+                "url": "https://example.com/ai-healthcare",
+                "source": "Journal of AI Research",
+                "summary": "An overview of how AI is transforming healthcare."
+              }
+            ]
+          },
+          "result": {
+            "unique_items": [
+              {
+                "title": "AI in Healthcare: Opportunities and Challenges",
+                "url": "https://example.com/ai-healthcare",
+                "source": "Journal of AI Research",
+                "summary": "An overview of how AI is transforming healthcare."
+              },
+              {
+                "title": "The Future of AI in Medicine",
+                "url": "https://example.com/future-ai-medicine",
+                "source": "Medical AI Journal",
+                "summary": "Exploring the future applications of AI in medicine."
+              }
+            ],
+            "duplicate_groups": [
+              {
+                "canonical_index": 0,
+                "item_indices": [
+                  0,
+                  1,
+                  3,
+                  4
+                ],
+                "items": [
+                  {
+                    "title": "AI in Healthcare: Opportunities and Challenges",
+                    "url": "https://example.com/ai-healthcare",
+                    "source": "Journal of AI Research",
+                    "summary": "An overview of how AI is transforming healthcare."
+                  },
+                  {
+                    "title": "AI in Healthcare: Opportunities and Challenges",
+                    "url": "https://example.com/ai-healthcare?utm_source=twitter",
+                    "source": "Journal of AI Research",
+                    "summary": "An overview of how AI is transforming healthcare."
+                  },
+                  {
+                    "title": "AI in Healthcare: Opportunities and Challenges",
+                    "url": "https://example.com/ai-healthcare",
+                    "source": "Journal of AI Research",
+                    "summary": "An overview of how AI is transforming healthcare."
+                  },
+                  {
+                    "title": "AI in Healthcare: Opportunities and Challenges",
+                    "url": "https://example.com/ai-healthcare",
+                    "source": "Journal of AI Research",
+                    "summary": "An overview of how AI is transforming healthcare."
+                  }
+                ]
+              }
+            ],
+            "original_count": 5,
+            "unique_count": 2,
+            "removed_count": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "G06_handle_fill",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Ask then fill missing handle while carrying limit."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Lấy 2 bài đăng mới nhất"
+        },
+        {
+          "role": "user",
+          "content": "Của Sam Altman"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_user_tweets",
+            "args": {
+              "screenname": "sama",
+              "limit": 2
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_user_tweets",
+            "args": {
+              "screenname": "sama",
+              "limit": 2
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_user_tweets",
+          "args": {
+            "screenname": "sama",
+            "limit": 2
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "sama",
+            "items": [
+              {
+                "title": "wrong",
+                "summary": "wrong",
+                "url": "https://x.com/sama/status/2081832600591892712",
+                "source": "@sama",
+                "date": "Mon Jul 27 20:02:25 +0000 2026",
+                "metrics": {
+                  "favorites": 11315,
+                  "retweets": 284,
+                  "views": "2204737"
+                }
+              },
+              {
+                "title": "agreed feels big, i want a new kind of computer",
+                "summary": "agreed feels big, i want a new kind of computer",
+                "url": "https://x.com/sama/status/2081513071135346814",
+                "source": "@sama",
+                "date": "Sun Jul 26 22:52:43 +0000 2026",
+                "metrics": {
+                  "favorites": 8136,
+                  "retweets": 283,
+                  "views": "2400394"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G07_timeframe_correction",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Latest correction overrides query and timeframe."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay"
+        },
+        {
+          "role": "user",
+          "content": "Đổi chủ đề thành robotics"
+        },
+        {
+          "role": "user",
+          "content": "Vẫn trong tháng này"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "web_search",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "month"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": false,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "web_search",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "month",
+              "max_results": 5
+            }
+          },
+          {
+            "name": "search_tweets",
+            "args": {
+              "query": "robotics",
+              "search_type": "Latest",
+              "limit": 5
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "extra_tool_call",
+        "failure_type": "wrong_arg_value",
+        "failures": [
+          "extra tool call search_tweets"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "web_search",
+          "args": {
+            "query": "robotics",
+            "topic": "news",
+            "timeframe": "month",
+            "max_results": 5
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "robotics",
+            "topic": "news",
+            "timeframe": "month",
+            "items": [
+              {
+                "title": "ICRA 2026 Convenes Robotics Community in Vienna - Let's Data Science",
+                "url": "https://letsdatascience.com/news/icra-2026-convenes-robotics-community-in-vienna-06244688",
+                "source": "letsdatascience.com",
+                "summary": "The **2026 IEEE International Conference on Robotics and Automation (ICRA)** ran **June 1-5, 2026** in Vienna at Messe Wien, drawing thousands of researchers and companies to what Robohub's first-person recap calls a showcase increasingly focused on closing the gap between lab demonstrations and real-world deployment. In a plenary titled \"A Tale of Two Cultures: Can Agentic Coding Close the Gap?\", UC Berkeley's **Ken Goldberg** argued that robot manipulation remains data-starved compared to vision-language models, noting that training a modern VLM takes the equivalent of roughly **100,000 years** of physical experience. On the exhibition floor, robotic hand dexterity, rather than humanoids, was the standout trend, exemplified by Chinese startup **TARS**'s DexHand, a 21-degree-of-freedom hand that won a Guinness World Record for wiring-harness insertion speed. For robotics practitioners, this recap is useful less as news and more as a snapshot of where the field's hardest open problems currently sit: not humanoid form factors, but data scarcity for manipulation and the mechanical/control gap in dexterous hands.",
+                "score": 0.45449692
+              },
+              {
+                "title": "AI² Robotics raises $735M at $3B valuation for wheeled humanoid robots - The Robot Report",
+                "url": "https://www.therobotreport.com/ai%C2%B2-robotics-raises-735m-3b-valuation-wheeled-humanoid-robots/",
+                "source": "therobotreport.com",
+                "summary": "# AI² Robotics raises $735M at $3B valuation for wheeled humanoid robots. By The Robot Report Staff |. AI² Robotics has raised about $735 million in a fresh financing round that pushed its valuation past 50 billion RMB, or about $2.8 billion U.S. The funding positions the Shenzhen-based company among the leaders of China’s fast-moving physical AI sector. The diverse investor base in AI² Robotics’ latest funding round reflects the strategic importance now placed on the technology, drawing capital from state-backed entities, industrial corporations, and financial institutions. AI² Robotics develops a wheeled mobile manipulator equipped with a humanoid torso and nimble five-fingered hands. The strategic decision to use a wheeled base over legged locomotion puts the company in the minority of Chinese firms developing humanoid-style robotics. The funding announcement comes on the heels of other recent funding events in the humanoid market, including the pending IPO by Agility, funding rounds for Apptronik and Neura, and the acquisition of Kinisi Robotics by Bear Robotics.",
+                "score": 0.45057756
+              },
+              {
+                "title": "The Amazing Robot Innovations At The Goodwood Future Lab - Forbes",
+                "url": "https://www.forbes.com/sites/bernardmarr/2026/07/24/the-amazing-robot-innovations-at-the-goodwood-future-lab/",
+                "source": "forbes.com",
+                "summary": "# The Amazing Robot Innovations At The Goodwood Future Lab. The Goodwood Festival of Speed's Future Lab offered a compelling look into robotics' future, showcasing how diverse robots could collaborate. OLO Robotics introduced a cloud platform simplifying robot programming with natural language, making automation accessible and enabling coordination of varied robot fleets. Enchanted Tools' Mirokaï robots, with their expressive, fox-like designs, demonstrated how personality fosters human acceptance in sensitive settings like hospitals. These innovations signal a shift from robotic spectacle to practical, everyday applications, emphasizing collaboration, accessibility, and human-robot comfort as robots integrate into our lives. A humanoid, a wheeled rover and a dog-like robot are trying to push a giant inflatable ball up a ramp. It sounds like an unusual science fiction comedy, yet at the Goodwood Festival of Speed, it offered a compelling glimpse of how robots could soon work together in the real world. Users can begin with a simulated robot in the cloud, test an application and transfer the same code to a physical machine.",
+                "score": 0.41819844
+              },
+              {
+                "title": "Samsung Electronics creates robotics division; ex-Hyundai executive to head strategy - Reuters",
+                "url": "https://www.reuters.com/world/asia-pacific/samsung-electronics-creates-robotics-division-key-part-growth-strategy-2026-07-21/",
+                "source": "reuters.com",
+                "summary": "Exclusive news, data and analytics for financial market professionals Learn more about Refinitiv. ## Browse World. ## Browse Business. ## Browse Markets. ## Browse Legal. SEOUL, July 21 (Reuters) - Samsung Electronics (005930.KS), opens new tab said on Tuesday it ​will set up a robotics division reporting directly ‌to the chief executive to accelerate development and commercialisation in the field and establish robotics as a growth engine. The South Korean conglomerate ​said the RX, or \"Robotics eXperience\", division will oversee its ​mid-to-long-term robotics strategy, core technology development and business ⁠execution, while expanding research capabilities at home and overseas. Samsung also said it plans ​to establish robotics research hubs in the U.S., China ​and Japan, where robotics technology is advancing rapidly, to strengthen competitiveness by ‌leveraging ⁠local ecosystems and expertise. *   #### World-Check, opens new tab. ### Browse. *   Media Center, opens new tab. *   Reuters News Agency, opens new tab. *   Reuters and AI, opens new tab.",
+                "score": 0.4024631
+              },
+              {
+                "title": "Rotterdam Hosts a Meeting Between Italian Companies and Benelux Industry Professionals with GSL Export - Robotics & Automation News",
+                "url": "https://roboticsandautomationnews.com/2026/07/28/rotterdam-hosts-a-meeting-between-italian-companies-and-benelux-industry-professionals-with-gsl-export/103647/",
+                "source": "roboticsandautomationnews.com",
+                "summary": "#### Robotics & Automation News publishes in-depth trend analysis on the future of drone logistics. # Robotics & Automation News. #### Manufacturing future: the best countries to start or relocate your tech startup in 2026. Since a robot could not detect the … [[Read More...] about AI-powered robot automates Serrano ham labeling for the first time](https://roboticsandautomationnews.com/2026/07/09/ai-powered-robot-automates-serrano-ham-labeling-for-the-first-time/103208/). Discover below … [[Read More...] about Manufacturing future: the best countries to start or relocate your tech startup in 2026](https://roboticsandautomationnews.com/2026/07/08/manufacturing-future-the-best-countries-to-start-or-relocate-your-tech-startup-in-2026/103188/). Doosan Robotics has launched a new AI-powered palletizing solution designed to help manufacturers automate palletizing while reducing engineering complexity and improving flexibility for changing … [[Read More...] about Doosan Robotics launches AI-powered palletizing solution for high-mix manufacturing](https://roboticsandautomationnews.com/2026/07/09/doosan-robotics-launches-ai-powered-palletizing-solution-for-high-mix-manufacturing/103197/). Kawasaki Robotics showcased a range of advanced automation technologies at Automate 2026 in Chicago, demonstrating how robotics, AI, machine learning, vision systems, and real-time control are … [[Read More...] about Kawasaki Robotics showcases 8-axis Physical AI robot and intelligent automation technologies at Automate 2026](https://roboticsandautomationnews.com/2026/06/26/kawasaki-robotics-showcases-8-axis-physical-ai-robot-and-intelligent-automation-technologies-at-automate-2026/102869/).",
+                "score": 0.39389837
+              }
+            ]
+          }
+        },
+        {
+          "tool": "search_tweets",
+          "args": {
+            "query": "robotics",
+            "search_type": "Latest",
+            "limit": 5
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "robotics",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "Are autonomy and robotics gaining momentum in the industry? https://t.co/7phI1jhkEt",
+                "summary": "Are autonomy and robotics gaining momentum in the industry? https://t.co/7phI1jhkEt",
+                "url": "https://x.com/techradar/status/2082388211406676066",
+                "source": "@techradar",
+                "date": "Wed Jul 29 08:50:13 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "The Self-Manufacturing Future: Humanoid Building Robots",
+                "summary": "The Self-Manufacturing Future: Humanoid Building Robots\nvia @Robo_Tuo\n\n#AI #Robotics #Engineering #Innovation https://t.co/nr5e6bfbLU",
+                "url": "https://x.com/VisiveAI/status/2082388189239722442",
+                "source": "@VisiveAI",
+                "date": "Wed Jul 29 08:50:07 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "4"
+                }
+              },
+              {
+                "title": "@0xLordsas did you join on Axis Robotics ?",
+                "summary": "@0xLordsas did you join on Axis Robotics ?",
+                "url": "https://x.com/HottieBabeGem/status/2082388100593131650",
+                "source": "@HottieBabeGem",
+                "date": "Wed Jul 29 08:49:46 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "55"
+                }
+              },
+              {
+                "title": "the timelines need to converge perfectly. models, demand, workforce, policy, liability. robotics are the largest distrib",
+                "summary": "the timelines need to converge perfectly. models, demand, workforce, policy, liability. robotics are the largest distribution problem yet",
+                "url": "https://x.com/willsentance/status/2082388060050989558",
+                "source": "@willsentance",
+                "date": "Wed Jul 29 08:49:37 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "21"
+                }
+              },
+              {
+                "title": "early project: @axisrobotics",
+                "summary": "early project: @axisrobotics\n\nwe'll probably be talking about axis robotics for the next few months\n\nit has the feeling of being kaito's first real comeback project, and the attention is already starting to build\n\none small thing that stood out to me was yuhu reacting to the axis × kaito announcement\n\ndoes it confirm anything? no\n\nbut if you've been around CT long enough, you know those early signals usually don't go unnoticed\n\ni also wouldn't expect kaito to come back with the same formula. this cycle feels different, so the old playbook probably won't get you very far\n\nright now, i'm just focused on building real mindshare, contributing where it makes sense, and staying close to the ecosystem\n\nif this turns into a reward-based campaign, i'd rather already be there than show up after everyone else starts posting about it\n\nbtw, i'll be posting a detailed guide on how to position yourself well for axis robotics soon\n\n🤖 robotics szn",
+                "url": "https://x.com/zarvxbt/status/2082388046033670378",
+                "source": "@zarvxbt",
+                "date": "Wed Jul 29 08:49:33 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "95"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G08_account_correction",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Corrected account replaces prior account."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Lấy tweet mới nhất của Sam Altman"
+        },
+        {
+          "role": "user",
+          "content": "Nhầm, của Andrej Karpathy"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "get_user_tweets",
+            "args": {
+              "screenname": "karpathy"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "get_user_tweets",
+            "args": {
+              "screenname": "karpathy"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "get_user_tweets",
+          "args": {
+            "screenname": "karpathy"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "karpathy",
+            "items": [
+              {
+                "title": "One pattern I find useful for working with LLMs is a nice long ramble session. Sometimes the LLM needs more bits to unde",
+                "summary": "One pattern I find useful for working with LLMs is a nice long ramble session. Sometimes the LLM needs more bits to understand what you're trying to achieve, but you're too lazy to type them. In these cases I like to lean back, switch to /voice and just ramble for like 10 minutes, total mess, anything goes, full stream of consciousness. Sometimes I declare it up top, something like \"switching to speech recognition sorry for any typos...\". Sometimes I turn it into a small interview of a few turns. But I find that the LLMs are somehow very good at reconstructing long incoherent rambles and often their echo of your own tangle of thoughts comes out quite a bit cleaner than what you started with. The result is that you improve the mind meld and have to correct things less from that point on.",
+                "url": "https://x.com/karpathy/status/2079610838143623371",
+                "source": "@karpathy",
+                "date": "Tue Jul 21 16:53:55 +0000 2026",
+                "metrics": {
+                  "favorites": 48651,
+                  "retweets": 4065,
+                  "views": "3900737"
+                }
+              },
+              {
+                "title": "RT @jarredsumner: Rewriting Bun in Rust",
+                "summary": "RT @jarredsumner: Rewriting Bun in Rust\n\nhttps://t.co/Rl8bcaxBFc",
+                "url": "https://x.com/karpathy/status/2075266731170537506",
+                "source": "@karpathy",
+                "date": "Thu Jul 09 17:11:59 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 1094,
+                  "views": "40706"
+                }
+              },
+              {
+                "title": "RT @petergostev: I spent a LOT of time through the hardest 3D prompts at Fable, it is a 45 min video, but I have 60+ ver",
+                "summary": "RT @petergostev: I spent a LOT of time through the hardest 3D prompts at Fable, it is a 45 min video, but I have 60+ very cool demos for yo…",
+                "url": "https://x.com/karpathy/status/2073496962566164990",
+                "source": "@karpathy",
+                "date": "Sat Jul 04 19:59:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 166,
+                  "views": "40696"
+                }
+              },
+              {
+                "title": "RT @Etched: We're coming out of stealth.",
+                "summary": "RT @Etched: We're coming out of stealth.\n\nWe've built our first racks after a successful A0 tapeout, $1B+ in customer contracts, and $800m…",
+                "url": "https://x.com/karpathy/status/2072051876816945486",
+                "source": "@karpathy",
+                "date": "Tue Jun 30 20:17:18 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 943,
+                  "views": "41084"
+                }
+              },
+              {
+                "title": "RT @EngramLab: https://t.co/CGIef5lIBI",
+                "summary": "RT @EngramLab: https://t.co/CGIef5lIBI",
+                "url": "https://x.com/karpathy/status/2069579404163031082",
+                "source": "@karpathy",
+                "date": "Wed Jun 24 00:32:35 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 248,
+                  "views": "39811"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "G09_telegram_confirm",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Confirmation is required before external delivery and send is not called."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Đăng bản tin AI này lên Telegram"
+        },
+        {
+          "role": "user",
+          "content": "Không"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "ask_user",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "ask_user",
+            "args": {
+              "question": "Bạn có muốn đăng bản tin AI này lên Telegram không?",
+              "response_type": "yes_no"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "ask_user",
+          "args": {
+            "question": "Bạn có muốn đăng bản tin AI này lên Telegram không?",
+            "response_type": "yes_no"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn có muốn đăng bản tin AI này lên Telegram không?",
+            "response_type": "yes_no",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "G10_parallel_sources",
+      "phase": "B",
+      "suite": "group",
+      "case_suite": "group",
+      "is_multiturn": true,
+      "metadata": {
+        "what_it_tests": "Independent web and X requests route to both tools."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tìm tin AI hôm nay trên web và tweet về AI trên X"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "web_search",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "search_tweets",
+            "args": {
+              "query": "AI"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "web_search",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "search_tweets",
+            "args": {
+              "query": "AI",
+              "search_type": "Latest"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "web_search",
+          "args": {
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
+                "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
+                "source": "ajot.com",
+                "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
+                "score": 0.2506701
+              },
+              {
+                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
+                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
+                "source": "washingtonpost.com",
+                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
+                "score": 0.23725812
+              },
+              {
+                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
+                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
+                "source": "techcrunch.com",
+                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
+                "score": 0.22859572
+              },
+              {
+                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
+                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                "source": "businessinsider.com",
+                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
+                "score": 0.22638187
+              },
+              {
+                "title": "HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong - Voice of Alexandria",
+                "url": "https://www.voiceofalexandria.com/news/national_business_news/hkt-unveils-self-developed-ai-platform-hkt-ai-one-stop-hub-for-global-ai-resources/article_ffd47d45-4254-5797-8fcb-8e30369bcf71.html",
+                "source": "voiceofalexandria.com",
+                "summary": "# HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong. HONG KONG SAR - Media OutReach Newswire - 28 July 2026 - HKT announces the launch of HKT.AI, a one-stop, integrated AI platform that enables businesses and individual customers to access a broad suite of prominent global AI resources through a single and intuitive interface. The platform aims to accelerate the mass adoption of AI in Hong Kong, especially in empowering SMEs in their digital transformation, and advance the vision of \"AI for All.\". HKT.AI aggregates a wide range of Chinese Mainland-based and global AI resources, enabling businesses and individuals to seamlessly access and switch across specialised applications and tools on a single platform to meet diverse work and everyday needs.",
+                "score": 0.2164091
+              }
+            ]
+          }
+        },
+        {
+          "tool": "search_tweets",
+          "args": {
+            "query": "AI",
+            "search_type": "Latest"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "AI",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "Digital Arrest scams और AI-generated Deepfake जैसे साइबर अपराधों पर केंद्र सरकार नया Bill लाने की तैयारी में है।",
+                "summary": "Digital Arrest scams और AI-generated Deepfake जैसे साइबर अपराधों पर केंद्र सरकार नया Bill लाने की तैयारी में है।\n\nDisclaimer: This video is intended only for news reporting, education and informational purposes. https://t.co/5Yo8DVEfqp",
+                "url": "https://x.com/business24TVIN/status/2082388326280229007",
+                "source": "@business24TVIN",
+                "date": "Wed Jul 29 08:50:40 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "@Reuren95 @quipnetwork @EthraShip @NucleusCodes @RiverdotInc @TheARCTERMINAL @quack_research @CNPYNetwork @R3ORDR @Kaito",
+                "summary": "@Reuren95 @quipnetwork @EthraShip @NucleusCodes @RiverdotInc @TheARCTERMINAL @quack_research @CNPYNetwork @R3ORDR @KaitoAI AI agents are here but opsec isn't optional. Audit your tools like your seeds.",
+                "url": "https://x.com/0xkutub/status/2082388322694107535",
+                "source": "@0xkutub",
+                "date": "Wed Jul 29 08:50:39 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "AI art did democratise art, the issue is that democracy sucks balls.",
+                "summary": "AI art did democratise art, the issue is that democracy sucks balls.",
+                "url": "https://x.com/TheAlasar/status/2082388317354541419",
+                "source": "@TheAlasar",
+                "date": "Wed Jul 29 08:50:38 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "A powerful signal that national AI strategy now requires direct collaboration between governments and infrastructure lea",
+                "summary": "A powerful signal that national AI strategy now requires direct collaboration between governments and infrastructure leaders. When a president shows up personally to accelerate a country's AI ambitions, it shows AI is no longer just a tech story, it's a core pillar of national competitiveness.",
+                "url": "https://x.com/DataValuenet/status/2082388307766284388",
+                "source": "@DataValuenet",
+                "date": "Wed Jul 29 08:50:36 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "Agreed comrade ",
+                "summary": "Agreed comrade \n\nTax the ultra-wealthy and global elites until there is nothing left to seize.   \n\nThey produce cars, houses, hospitals, rockets and AI. Dangerous surplus.\n\nWe need a full moratorium on private innovation until the classless society is achieved.\n\nThe productive must contribute to the collective so bureaucrats can preserve true equality.\n\nThe 5-year plan is perfect ☭",
+                "url": "https://x.com/r_riskit/status/2082388306923319633",
+                "source": "@r_riskit",
+                "date": "Wed Jul 29 08:50:35 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

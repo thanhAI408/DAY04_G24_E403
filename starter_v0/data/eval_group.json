@@ -1,7 +1,18 @@
 {
-  "dataset_id": "day04_v2_research_group",
+  "dataset_id": "day04_v3_research_group",
   "dataset_role": "group",
-  "description": "Template để NHÓM tự viết đúng 10 case: 5 single-turn dùng query và 5 multi-turn dùng turns. Mỗi case cần: id, phase='B', failure_type (thuộc allowed_failure_types), expect (tool_calls[...] hoặc no_tool=true), và metadata.what_it_tests. File để trống có chủ đích vì mỗi nhóm phải tự thiết kế các case này.",
+  "description": "Team eval for semantic research tools and confirmation boundaries.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {"id":"G01_account_limit","phase":"B","suite":"group","query":"Lấy 4 bài đăng gần nhất của Sam Altman","failure_type":"wrong_arg_value","expect":{"tool_calls":[{"name":"get_user_tweets","args":{"screenname":"sama","limit":4}}]},"metadata":{"what_it_tests":"Explicit account mapping and limit preservation."}},
+    {"id":"G02_top_topic","phase":"B","suite":"group","query":"Tìm các bài phổ biến nhất về AI agents trên X","failure_type":"wrong_arg_value","expect":{"tool_calls":[{"name":"search_tweets","args":{"query":"AI agents","search_type":"Top"}}]},"metadata":{"what_it_tests":"Topic search with Top mapping."}},
+    {"id":"G03_monthly_news","phase":"B","suite":"group","query":"Tìm tin tức về robotics trong tháng này","failure_type":"wrong_arg_value","expect":{"tool_calls":[{"name":"web_search","args":{"query":"robotics","topic":"news","timeframe":"month"}}]},"metadata":{"what_it_tests":"News topic and month timeframe normalization."}},
+    {"id":"G04_missing_url","phase":"B","suite":"group","query":"Đọc và tóm tắt bài viết này giúp mình","failure_type":"missing_info","expect":{"tool_calls":[{"name":"ask_user","args":{"response_type":"text"}}]},"metadata":{"what_it_tests":"Missing concrete URL asks for text clarification."}},
+    {"id":"G05_deduplicate","phase":"B","suite":"group","query":"Loại các nguồn trùng lặp trong danh sách này","failure_type":"wrong_tool","expect":{"tool_calls":[{"name":"deduplicate_research_items","args":{}}]},"metadata":{"what_it_tests":"Explicit deduplication routes to the team tool."}},
+    {"id":"G06_handle_fill","phase":"B","suite":"group","turns":[{"role":"user","content":"Lấy 2 bài đăng mới nhất"},{"role":"user","content":"Của Sam Altman"}],"failure_type":"missing_info","expect":{"tool_calls":[{"name":"get_user_tweets","args":{"screenname":"sama","limit":2}}]},"metadata":{"what_it_tests":"Ask then fill missing handle while carrying limit."}},
+    {"id":"G07_timeframe_correction","phase":"B","suite":"group","turns":[{"role":"user","content":"Tin AI hôm nay"},{"role":"user","content":"Đổi chủ đề thành robotics"},{"role":"user","content":"Vẫn trong tháng này"}],"failure_type":"wrong_arg_value","expect":{"tool_calls":[{"name":"web_search","args":{"query":"robotics","topic":"news","timeframe":"month"}}]},"metadata":{"what_it_tests":"Latest correction overrides query and timeframe."}},
+    {"id":"G08_account_correction","phase":"B","suite":"group","turns":[{"role":"user","content":"Lấy tweet mới nhất của Sam Altman"},{"role":"user","content":"Nhầm, của Andrej Karpathy"}],"failure_type":"wrong_arg_value","expect":{"tool_calls":[{"name":"get_user_tweets","args":{"screenname":"karpathy"}}]},"metadata":{"what_it_tests":"Corrected account replaces prior account."}},
+    {"id":"G09_telegram_confirm","phase":"B","suite":"group","turns":[{"role":"user","content":"Đăng bản tin AI này lên Telegram"},{"role":"user","content":"Không"}],"failure_type":"wrong_boundary","expect":{"tool_calls":[{"name":"ask_user","args":{"response_type":"yes_no"}}]},"metadata":{"what_it_tests":"Confirmation is required before external delivery and send is not called."}},
+    {"id":"G10_parallel_sources","phase":"B","suite":"group","turns":[{"role":"user","content":"Tìm tin AI hôm nay trên web và tweet về AI trên X"}],"failure_type":"wrong_tool","expect":{"tool_calls":[{"name":"web_search","args":{"query":"AI","topic":"news","timeframe":"day"}},{"name":"search_tweets","args":{"query":"AI"}}]},"metadata":{"what_it_tests":"Independent web and X requests route to both tools."}}
+  ]
 }
