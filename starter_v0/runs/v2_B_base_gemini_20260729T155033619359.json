@@ -1,0 +1,1637 @@
+{
+  "run_id": "v2_B_base_gemini_20260729T155033619359",
+  "version": "v2",
+  "artifact_version": "v2+p9353e8c8e6ed+t7ebc4445fb86",
+  "prompt_hash": "9353e8c8e6edfd1052d34ad6a361a791077e9eeb7408280550f2763706662475",
+  "tools_hash": "7ebc4445fb8608245b43a9dd1c0f1c5041e5f6eea4fbf64487df9dbeb10c1956",
+  "phase": "B",
+  "suite": "base",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "system_prompt": "C:\\Users\\admin\\Documents\\VinUni\\DAY04_G24_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\admin\\Documents\\VinUni\\DAY04_G24_E403\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_base.json",
+  "dataset_id": "day04_v2_research_base",
+  "dataset_role": "base",
+  "description": "Core eval cho research agent: routing đúng tool + đúng args, hỏi lại khi thiếu (ask_user), xác nhận trước khi gửi, và xử lý câu ngoài phạm vi / không cần tool. Chấm trên tool_calls + args (subset). KHÔNG sửa file này — chỉ thêm case vào eval_group.json.",
+  "generated_at": "2026-07-29T15:50:33",
+  "summary": {
+    "total_cases": 20,
+    "measured_cases": 16,
+    "provider_error_cases": 4,
+    "passed_cases": 15,
+    "case_accuracy": 0.9375,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 0.9375,
+    "multiturn_accuracy": 1.0,
+    "failure_counts": {
+      "wrong_boundary": 1
+    },
+    "observed_mismatch_counts": {
+      "wrong_arg_value": 1
+    }
+  },
+  "results": [
+    {
+      "id": "R01_user_tweets_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_user_tweets_name_to_handle",
+        "difficulty": "medium",
+        "what_it_tests": "Tin CỦA một người nổi tiếng → map tên Sam Altman thành handle sama rồi gọi get_user_tweets."
+      },
+      "input": "Tweet mới nhất của Sam Altman là gì?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "sama"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "limit": 1,
+              "screenname": "sama"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "limit": 1,
+            "screenname": "sama"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "sama",
+            "items": [
+              {
+                "title": "wrong",
+                "summary": "wrong",
+                "url": "https://x.com/sama/status/2081832600591892712",
+                "source": "@sama",
+                "date": "Mon Jul 27 20:02:25 +0000 2026",
+                "metrics": {
+                  "favorites": 11314,
+                  "retweets": 284,
+                  "views": "2204653"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R02_search_tweets_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_search_tweets",
+        "difficulty": "easy",
+        "what_it_tests": "Tweet theo CHỦ ĐỀ → search_tweets, không phải get_user_tweets."
+      },
+      "input": "Mọi người đang bàn gì về GPT-5 trên Twitter?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {}
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "query": "GPT-5",
+              "search_type": "Latest"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "GPT-5",
+            "search_type": "Latest"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "GPT-5",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "@Im_IrushiK Gpt 5.6 sol &gt;&gt; nerfed fable 5 &gt;&gt; GPT 5.5 &gt;&gt; Opus 4.x &gt;&gt; GLM 5.2 &gt;&gt; Opus 5  &gt",
+                "summary": "@Im_IrushiK Gpt 5.6 sol &gt;&gt; nerfed fable 5 &gt;&gt; GPT 5.5 &gt;&gt; Opus 4.x &gt;&gt; GLM 5.2 &gt;&gt; Opus 5  &gt;&gt; Kimi k3 &gt;&gt; Grok 4.5 &gt;&gt; gemini 3.6 flash &gt;&gt; Sonnet 5 \n\nSeems more accurate to me. Opus 5 is intelligent but it's too random, I can't trust it to execute something properly from what I've seen.",
+                "url": "https://x.com/databrecht/status/2082387610492698892",
+                "source": "@databrecht",
+                "date": "Wed Jul 29 08:47:49 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "5"
+                }
+              },
+              {
+                "title": "@kimmonismus Definitely not GPT 5.x doing any of that.",
+                "summary": "@kimmonismus Definitely not GPT 5.x doing any of that.",
+                "url": "https://x.com/Dio76Bri76/status/2082387294892257348",
+                "source": "@Dio76Bri76",
+                "date": "Wed Jul 29 08:46:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "3"
+                }
+              },
+              {
+                "title": "Chat GPT plus ✏️",
+                "summary": "Chat GPT plus ✏️\n\n07 วัน 𓏔 50 บาท\n┈┈┈┈┈┈┈\n30 วัน 𓏔 179 บาท ⚠️\n꒰ รีnวิตเหลือ 109 บาท ꒱\n\nเมลร้าน หาร5 เมลปิดเคลม\nใช้โมเดล GPT-5,GPT4o\n\n𓈈สั่งซื้อ =\nhttps://t.co/jdQFg4iwsA\n “thx u for Oder”\n\n#หารchatgpt #หารแชทจีพีที \n#หารchatgptplus งยีขายีบีบีกพะด",
+                "url": "https://x.com/PAI1988894/status/2082387153489989834",
+                "source": "@PAI1988894",
+                "date": "Wed Jul 29 08:46:00 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "9"
+                }
+              },
+              {
+                "title": "Which Company Has the Third Best AI Model in July?",
+                "summary": "Which Company Has the Third Best AI Model in July?\nThe AI model market is fragmented with no clear third best, as open-weight Kimi K3 beats proprietary GPT-5.6 Sol and Claude Opus 5 in key categories\n\nhttps://t.co/E6jCSNhYTp\n\n#Tech #AI #AIRankings #Polymarket",
+                "url": "https://x.com/polypredictionx/status/2082386933246824507",
+                "source": "@polypredictionx",
+                "date": "Wed Jul 29 08:45:08 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "26"
+                }
+              },
+              {
+                "title": "@kurvan1112 自分の体感だと特に急増は感じてないけど、昔からあるね。いつからだったかな…GPT-4の頃にはあったと思うけど",
+                "summary": "@kurvan1112 自分の体感だと特に急増は感じてないけど、昔からあるね。いつからだったかな…GPT-4の頃にはあったと思うけど\n\n私は別言語を突然話し始めるのはもう随分長いこと見てないよ。少なくとも今年は見てない。トークンの中に紛れ込むやつは一昨日くらいにOpus 5で見たけど、その前1週間は見てない気がする",
+                "url": "https://x.com/ritomath01_05/status/2082386686928203904",
+                "source": "@ritomath01_05",
+                "date": "Wed Jul 29 08:44:09 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": "10"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R03_web_news_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_web_news",
+        "difficulty": "medium",
+        "what_it_tests": "Tin thời sự trên web → web_search topic=news, timeframe=day (hôm nay)."
+      },
+      "input": "Tin tức AI hôm nay có gì nổi bật?",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "timeframe": "day",
+              "query": "AI",
+              "topic": "news"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "timeframe": "day",
+            "query": "AI",
+            "topic": "news"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
+                "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
+                "source": "ajot.com",
+                "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
+                "score": 0.2506701
+              },
+              {
+                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
+                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
+                "source": "washingtonpost.com",
+                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
+                "score": 0.23725812
+              },
+              {
+                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
+                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
+                "source": "techcrunch.com",
+                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
+                "score": 0.22859572
+              },
+              {
+                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
+                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                "source": "businessinsider.com",
+                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
+                "score": 0.22638187
+              },
+              {
+                "title": "HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong - Voice of Alexandria",
+                "url": "https://www.voiceofalexandria.com/news/national_business_news/hkt-unveils-self-developed-ai-platform-hkt-ai-one-stop-hub-for-global-ai-resources/article_ffd47d45-4254-5797-8fcb-8e30369bcf71.html",
+                "source": "voiceofalexandria.com",
+                "summary": "# HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong. HONG KONG SAR - Media OutReach Newswire - 28 July 2026 - HKT announces the launch of HKT.AI, a one-stop, integrated AI platform that enables businesses and individual customers to access a broad suite of prominent global AI resources through a single and intuitive interface. The platform aims to accelerate the mass adoption of AI in Hong Kong, especially in empowering SMEs in their digital transformation, and advance the vision of \"AI for All.\". HKT.AI aggregates a wide range of Chinese Mainland-based and global AI resources, enabling businesses and individuals to seamlessly access and switch across specialised applications and tools on a single platform to meet diverse work and everyday needs.",
+                "score": 0.2164091
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R04_read_url_routing",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "routing_read_url",
+        "difficulty": "easy",
+        "what_it_tests": "Đã có link cụ thể → read_url, không phải web_search."
+      },
+      "input": "Tóm tắt bài này giúp mình: https://openai.com/blog/gpt-5",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/blog/gpt-5"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://openai.com/blog/gpt-5"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "fetch",
+          "args": {
+            "url": "https://openai.com/blog/gpt-5"
+          },
+          "result": {
+            "tool": "read_url",
+            "url": "https://openai.com/blog/gpt-5",
+            "items": [
+              {
+                "title": "OpenAI",
+                "url": "https://openai.com/blog/gpt-5",
+                "source": "openai.com",
+                "summary": "OpenAI\n\n# 404\n\nThe index rests now\n\nQuiet shelves hold their places\n\nChoose another book\n\nby [gpt-5.6-sol(opens in a new window)](https://chatgpt.com/?model=gpt-5.6-sol&openaicom-did=dba71ae9-3a13-449c-a57d-55ef715ec2f2&openaicom_referred=true)"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R05_limit_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_limit",
+        "difficulty": "easy",
+        "what_it_tests": "Trích đúng limit=10 từ '10 tweet'."
+      },
+      "input": "Lấy 10 tweet mới nhất của Elon Musk",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 10
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 10
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "elonmusk",
+            "limit": 10
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "elonmusk",
+            "items": [
+              {
+                "title": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.",
+                "summary": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.\n\nThe independent test measures how well AI m…",
+                "url": "https://x.com/elonmusk/status/2082369174828118361",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:34:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 130,
+                  "views": "432814"
+                }
+              },
+              {
+                "title": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:",
+                "summary": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:\n\n\"Determined to maintain their individual transporta…",
+                "url": "https://x.com/elonmusk/status/2082368994552782986",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:51 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 913,
+                  "views": "329155"
+                }
+              },
+              {
+                "title": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it ",
+                "summary": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it feels remarkable. I…",
+                "url": "https://x.com/elonmusk/status/2082368965498773975",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:44 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 152,
+                  "views": "321494"
+                }
+              },
+              {
+                "title": "RT @cb_doge: Help build the AI that advances humanity.",
+                "summary": "RT @cb_doge: Help build the AI that advances humanity.\n\nSpaceXAI is hiring exceptional engineers to work on @Grok. Explore all open roles t…",
+                "url": "https://x.com/elonmusk/status/2082368915129401688",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:32 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 162,
+                  "views": "329324"
+                }
+              },
+              {
+                "title": "Cool",
+                "summary": "Cool",
+                "url": "https://x.com/elonmusk/status/2082368400702226588",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:31:29 +0000 2026",
+                "metrics": {
+                  "favorites": 5767,
+                  "retweets": 517,
+                  "views": "707826"
+                }
+              },
+              {
+                "title": "RT @kevinnbass: Sweden did not lock down https://t.co/vZdZf5e18b",
+                "summary": "RT @kevinnbass: Sweden did not lock down https://t.co/vZdZf5e18b",
+                "url": "https://x.com/elonmusk/status/2082368305046929702",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:31:07 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 278,
+                  "views": "386326"
+                }
+              },
+              {
+                "title": "The ship landing was precise, meaning that it would have been caught by the tower arms",
+                "summary": "The ship landing was precise, meaning that it would have been caught by the tower arms",
+                "url": "https://x.com/elonmusk/status/2082367610835157028",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:28:21 +0000 2026",
+                "metrics": {
+                  "favorites": 7221,
+                  "retweets": 785,
+                  "views": "794382"
+                }
+              },
+              {
+                "title": "John Cleese has (all too rare) common sense",
+                "summary": "John Cleese has (all too rare) common sense",
+                "url": "https://x.com/elonmusk/status/2082361703833243972",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:04:53 +0000 2026",
+                "metrics": {
+                  "favorites": 11034,
+                  "retweets": 974,
+                  "views": "1135840"
+                }
+              },
+              {
+                "title": "Grok now in Copilot",
+                "summary": "Grok now in Copilot",
+                "url": "https://x.com/elonmusk/status/2082360969150529649",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:01:58 +0000 2026",
+                "metrics": {
+                  "favorites": 2227,
+                  "retweets": 294,
+                  "views": "904176"
+                }
+              },
+              {
+                "title": "RT @kevinnbass: Emails show leading officials at NIH, including Fauci, knew the best data indicated no benefit from mask",
+                "summary": "RT @kevinnbass: Emails show leading officials at NIH, including Fauci, knew the best data indicated no benefit from masks.\n\nWhy did they pr…",
+                "url": "https://x.com/elonmusk/status/2082357215978242249",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 06:47:03 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 1843,
+                  "views": "479571"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R06_timeframe_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_timeframe",
+        "difficulty": "medium",
+        "what_it_tests": "'tuần này' → timeframe=week."
+      },
+      "input": "Tin công nghệ trong tuần này",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "timeframe": "week"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "topic": "news",
+              "query": "công nghệ",
+              "timeframe": "week"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "topic": "news",
+            "query": "công nghệ",
+            "timeframe": "week"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "công nghệ",
+            "topic": "news",
+            "timeframe": "week",
+            "items": [
+              {
+                "title": "Công nghệ ADN thế hệ mới: Lời giải cho chiến dịch 500 ngày đêm tìm lại tên cho các liệt sĩ - Tuổi Trẻ Online",
+                "url": "https://tuoitre.vn/cong-nghe-adn-the-he-moi-loi-giai-cho-chien-dich-500-ngay-dem-tim-lai-ten-cho-cac-liet-si-100260722170556011.htm",
+                "source": "tuoitre.vn",
+                "summary": "- Công nghệ chỉ là một phần của giải pháp và vẫn còn không ít thách thức. Thứ nhất là nhiều hài cốt đã phân hủy quá nặng, gần như không còn đủ vật liệu di truyền để phân tích dù đã dùng công nghệ tiên tiến nhất. [...] Công nghệ NGS-SNP đã cho những kết quả ban đầu trong việc xác định danh tính liệt sĩ tại Việt Nam - Ảnh: NAM TRẦN\n\nThời gian tới, về công nghệ, chúng tôi sẽ tiếp tục hoàn thiện quy trình NGS-SNP để nâng cao hơn nữa tỉ lệ tách chiết thành công trên các mẫu hài cốt phân hủy đặc biệt nặng, đồng thời nghiên cứu ứng dụng công nghệ xử lý vi mảng (microarray) cho mẫu sinh phẩm thân nhân, nhằm mở rộng nhanh quy mô cơ sở dữ liệu đối chiếu với chi phí hợp lý. [...] Thứ hai, công nghệ sử dụng hơn 5.000 chỉ thị SNP trên ADN trong nhân tế bào, cho phép khớp nối huyết thống theo cả dòng cha và dòng mẹ, tới thế hệ thứ tư, trong khi ADN ti thể chỉ di truyền theo dòng mẹ và dễ trùng lặp giữa những người không có quan hệ huyết thống trực tiếp.",
+                "score": 0.3446204
+              },
+              {
+                "title": "Khoa học, công nghệ và đổi mới sáng tạo - Động lực quan trọng nâng cao chất lượng quản trị của Bộ Nội vụ",
+                "url": "https://tcnnld.vn/news/detail/72772/Khoa-hoc-cong-nghe-va-doi-moi-sang-tao---Dong-luc-quan-trong-nang-cao-chat-luong-quan-tri-cua-Bo-Noi-vu.html",
+                "source": "tcnnld.vn",
+                "summary": "học, công nghệ và đổi mới sáng tạo, góp phần thực hiện thắng lợi các mục tiêu phát triển của ngành Nội vụ trong giai đoạn 2026 - 2030. [...] Kế hoạch về khoa học, công nghệ và đổi mới sáng tạo 5 năm của Bộ Nội vụ giai đoạn 2026 - 2030 được ban hành nhằm cụ thể hóa các chủ trương của Đảng, chính sách, pháp luật của Nhà nước về phát triển khoa học, công nghệ và đổi mới sáng tạo; xác định mục tiêu, nhiệm vụ, giải pháp và lộ trình triển khai phù hợp với chức năng, nhiệm vụ của Bộ Nội vụ; đồng thời là căn cứ để các đơn vị thuộc và trực thuộc Bộ xy dựng chương trình, kế hoạch hằng năm, tổ chức thực hiện các nhiệm vụ khoa học, công nghệ và [...] Thông tin về Dự thảo “Kế hoạch về khoa học, công nghệ và đổi mới sáng tạo 5 năm của Bộ Nội vụ giai đoạn 2026 - 2030”, TS Vũ Xun Thanh, Phó Viện trưởng Viện Khoa học Tổ chức nhà nước và Lao động cho biết, trong giai đoạn 2021 - 2025, hoạt động khoa học, công nghệ và đổi mới sáng tạo của Bộ Nội vụ đã có nhiều chuyển biến tích cực, từng bước cung cấp cơ sở khoa học và thực tiễn phục vụ xy dựng, hoàn thiện thể chế, chính sách và nng cao hiệu lực, hiệu quả quản lý nhà nước trong các lĩnh vực thuộc",
+                "score": 0.30448663
+              },
+              {
+                "title": "Chính sách và công nghệ tạo lực đẩy cho sử dụng năng lượng tiết kiệm, hiệu quả",
+                "url": "https://www.evn.com.vn/d/vi-VN/news/Chinh-sach-va-cong-nghe-tao-luc-day-cho-su-dung-nang-luong-tiet-kiem-hieu-qua-60-635-509037",
+                "source": "evn.com.vn",
+                "summary": "Các đại biểu cũng trao đổi về mô hình khu công nghiệp thông minh, ứng dụng công nghệ quản lý hiện đại để tối ưu vận hành; giải pháp phát triển nhà máy thông minh gắn với chuyển đổi số, qua đó cải thiện quy trình sản xuất, nâng cao năng suất và năng lực cạnh tranh của doanh nghiệp. [...] Một trong những nội dung trọng tâm là các giải pháp ứng dụng trí tuệ nhân tạo (AI) trong giám sát, điều khiển và tối ưu vận hành hệ thống. Theo các ý kiến tại hội thảo, việc ứng dụng AI có thể hỗ trợ doanh nghiệp nâng cao hiệu suất hoạt động, giảm tiêu hao năng lượng và tối ưu chi phí sản xuất. [...] Bên cạnh giải pháp công nghệ, hội thảo cung cấp thông tin về các cơ chế tài chính và chính sách hỗ trợ đầu tư cho dự án tiết kiệm năng lượng, tạo điều kiện để doanh nghiệp tiếp cận nguồn vốn và đẩy nhanh quá trình triển khai. Hoạt động hỏi đáp, tư vấn trực tiếp cũng giúp các doanh nghiệp, tổ chức và chuyên gia tăng cường kết nối, chia sẻ kinh nghiệm và tìm kiếm cơ hội hợp tác.",
+                "score": 0.30238128
+              },
+              {
+                "title": "'Vũ trụ công nghệ đa tầng' đầu tiên tại TP HCM - Báo VnExpress",
+                "url": "https://vnexpress.net/vu-tru-cong-nghe-da-tang-dau-tien-tai-tp-hcm-5101418.html",
+                "source": "vnexpress.net",
+                "summary": "Trong khi đó, Infinity World là không gian của công nghệ LED vô cực và nghệ thuật thị giác 12D+, phù hợp nhiều lứa tuổi hơn. Tuy vậy, do công nghệ LED vô cực và không gian ảo 12D+ liên tục thay đổi ánh sáng mạnh, việc trải nghiệm có thể gy chóng mặt hoặc mỏi mắt nhẹ cho trẻ nhỏ hoặc người nhạy cảm với thị giác. [...] Trong khi đó, Infinity World là không gian của công nghệ LED vô cực và nghệ thuật thị giác 12D+, phù hợp nhiều lứa tuổi hơn. Tuy vậy, do công nghệ LED vô cực và không gian ảo 12D+ liên tục thay đổi ánh sáng mạnh, việc trải nghiệm có thể gy chóng mặt hoặc mỏi mắt nhẹ cho trẻ nhỏ hoặc người nhạy cảm với thị giác. [...] Bên cạnh giải trí công nghệ, Gigaversal còn mở rộng trải nghiệm sang lĩnh vực nghệ thuật với triển lãm nghệ thuật tương tác đa giác quan Van Gogh. Khách có thể \"bước vào\" thế giới hội họa tương tác trong không gian 3.800 m2, được lắp đặt hệ thống hơn 90 thiết bị máy chiếu công nghiệp, màn chiếu kỹ thuật số, kết hợp công nghệ AR, 3D mapping, nhạc cổ điển, giúp trải nghiệm hình ảnh sống động hơn so với các triển lãm thông thường.",
+                "score": 0.29976124
+              },
+              {
+                "title": "TP. Hồ Chí Minh hút nguồn lực công nghệ toàn cầu, tạo động lực tăng trưởng mới",
+                "url": "https://thoibaotaichinhvietnam.vn/tp-ho-chi-minh-hut-nguon-luc-cong-nghe-toan-cau-tao-dong-luc-tang-truong-moi-201399.html",
+                "source": "thoibaotaichinhvietnam.vn",
+                "summary": "GS. Nguyễn Đức Khương cho biết, Việt Nam đang đứng trước thời điểm thuận lợi để bứt phá bằng khoa học công nghệ, song yếu tố quyết định vẫn là con người. “Công nghệ không thay đổi quốc gia, mà con người mới là người thay đổi quốc gia thông qua công nghệ” - GS. Nguyễn Đức Khương nhấn mạnh. [...] Để hiện thực hóa mục tiêu này, TP. Hồ Chí Minh xác định khoa học công nghệ, đổi mới sáng tạo và chuyển đổi số là động lực tăng trưởng chủ yếu trong giai đoạn phát triển mới. Theo ông Nguyễn Mạnh Cường, các công nghệ nền tảng như trí tuệ nhn tạo (AI), công nghệ bán dẫn và công nghệ số sẽ tạo ra mô hình tăng trưởng mới, góp phần nng cao năng suất lao động, năng lực cạnh tranh của doanh nghiệp và hiệu quả quản trị đô thị.",
+                "score": 0.29564205
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R07_search_type_arg",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "arg_search_type",
+        "difficulty": "medium",
+        "what_it_tests": "'phổ biến/top' → search_type=Top (không phải Latest)."
+      },
+      "input": "Cho mình các tweet phổ biến (top) nhất về OpenAI",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Top"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "social_search",
+            "args": {
+              "search_type": "Top",
+              "query": "OpenAI"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "social_search",
+          "args": {
+            "search_type": "Top",
+            "query": "OpenAI"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "OpenAI",
+            "search_type": "Top",
+            "items": [
+              {
+                "title": "Frontier AI went free this month. Not cheaper. Free.",
+                "summary": "Frontier AI went free this month. Not cheaper. Free.\n\nNew models:\n\n> Gemini 3.6 Flash. 1,500 req/day, 1M tokens/min, no card\n> Kimi K3. 2.8T MoE open weights, shipped today. Largest open-weight model ever\n> DeepSeek V4. 1.6T MoE, MIT license, on HuggingFace\n> GLM-5.2. 753B MoE, 1M context, MIT license\n> Qwen 3.8-Max. Free preview, no login, no card\n> Mistral Vibe. Work Mode free. Agent features, scheduled tasks. ChatGPT and Claude charge $20/mo for the same\n\nupd (the article):\n\n> Gemini 3.5 → 3.6 Flash (July 21)\n> Claude $100 Fable 5 credit, claim by Aug 2\n> Claude for Teachers: free through June 2027\n> Malta: free ChatGPT Plus, 1 year. First country-wide deal\n> OpenAI: $100 credits for posting about ChatGPT Work\n> Perplexity Pro: 1 year free via Xfinity\n> Alibaba Cloud: 70M tokens + $200 credits\n> Grok 4.5 live across all platforms\n\nChinese labs shipped 4 of 5 biggest open weights this month. OpenAI and Anthropic shipped credits. The access gap didn't close. It already closed.",
+                "url": "https://x.com/zefirium/status/2081740213525561783",
+                "source": "@zefirium",
+                "date": "Mon Jul 27 13:55:18 +0000 2026",
+                "metrics": {
+                  "favorites": 299,
+                  "retweets": 22,
+                  "views": "41767"
+                }
+              },
+              {
+                "title": "CLAUDE OPUS 5 SHIPPED YESTERDAY AND BEAT GPT-5.6 SOL ON EVERY PUBLIC BENCHMARK. THE NUMBER THAT ACTUALLY MATTERS IS THE ",
+                "summary": "CLAUDE OPUS 5 SHIPPED YESTERDAY AND BEAT GPT-5.6 SOL ON EVERY PUBLIC BENCHMARK. THE NUMBER THAT ACTUALLY MATTERS IS THE ONE ON THE PRICE TAG: $5, NOT $10\n\nanthropic put out Opus 5 on july 24, 2026. the headline everyone is running is \"crushes GPT-5.6.\" the real story is where it landed in Anthropic's own lineup, and what it costs to run.\n\nthe benchmark sheet, all vendor-reported, independent replication not in yet:\n\nFrontier-Bench (agentic coding): Opus 5 43.3%, GPT-5.6 Sol 34.4%\nSWE-bench Verified: Opus 5 97.0%, GPT-5.6 Sol 96.2%, Fable 5 95.0%\nARC-AGI-3 (novel reasoning): Opus 5 30.2%, GPT-5.6 Sol 7.8%\nGDPval-AA v2 (knowledge work, Elo): Opus 5 1,861, Fable 5 1,747, GPT-5.6 Sol 1,736\nthe ARC-AGI-3 line is the one to stare at. 30.2 vs 7.8 is not a rounding-error lead, it is roughly 4x. that benchmark rewards working out rule systems the model was never trained on, which is the hardest thing on this list to fake with retrieval.\nnow the reframe. the loud comparison is Opus 5 vs OpenAI. the quiet one is Opus 5 vs Fable 5, Anthropic's own flagship. Opus 5 costs $5 per million input, $25 output. Fable 5 costs $10 and $50, exactly double. and on GDPval and SWE-bench Verified, the $5 model is scoring at or above the $10 one.\nso the interesting question is not \"did it beat GPT.\" it is \"why would you still pay for Fable 5.\" Anthropic's own answer: the hardest long-horizon runs, the multi-day autonomous work, where the CursorBench gap that no chart puts on the front page still shows up.\n\nhere is how to actually read a launch like this in about ten minutes, instead of retweeting the chart:\n\nseparate vendor-run numbers from independent ones. every headline figure here is Anthropic's own harness. cross-vendor scores on a vendor's own scaffold lean toward that vendor. wait for an outside run before you treat 4x as settled\ncheck the price per benchmark point, not the benchmark point. Opus 5 near Fable 5 at half the output cost is the whole pitch\nread the caveats the launch buries: Opus 5 trails Mythos 5 on cybersecurity and biology, and is \"far behind\" on exploit development. that is Anthropic gating capability on purpose\nnote the training cutoff: Opus 5 reads to may 2026, Fable 5 and Opus 4.8 stop at january. four months matters for anything touching recent software\n\none benchmark is a claim. the price next to the benchmark is the decision.\n\nbookmark this before the next lab ships in six weeks and the whole chart gets a new top row.",
+                "url": "https://x.com/Yumzlef/status/2082163547623329846",
+                "source": "@Yumzlef",
+                "date": "Tue Jul 28 17:57:29 +0000 2026",
+                "metrics": {
+                  "favorites": 16,
+                  "retweets": 1,
+                  "views": "1906"
+                }
+              },
+              {
+                "title": "Anthropic President Daniela Amodei:",
+                "summary": "Anthropic President Daniela Amodei:\n\n\"80% of our engineers have already moved to agents. in 3-6 months, agent architect is just the job\n\nhere's the one thing we do that OpenAI doesn't\"\n\nin this interview, Anthropic's president explains how banks like Jane Street and Coinbase came to trust Claude\n\nit's worth more than a $500 enterprise AI course.\n\nWatch and bookmark!",
+                "url": "https://x.com/0xF1ction/status/2082198513086067098",
+                "source": "@0xF1ction",
+                "date": "Tue Jul 28 20:16:25 +0000 2026",
+                "metrics": {
+                  "favorites": 88,
+                  "retweets": 8,
+                  "views": "42395"
+                }
+              },
+              {
+                "title": "🚨 GitHub just dropped a bomb. 🔥",
+                "summary": "🚨 GitHub just dropped a bomb. 🔥\n\nSomeone released a repository that lets you use Claude Code for free, forever.\n\nThis isn't a crack.\n\nIt automatically routes your requests through 10+ free OpenAI-compatible providers, including DeepSeek, Kimi, and more.\n\n⚡ Setup takes about 5 minutes.\n\n👨‍💻 Already trusted by 20,000+ developers.\n\nIf you're tired of paying for Claude but still want the same developer experience...\n\nThis is the GitHub repo everyone's been sharing lately.",
+                "url": "https://x.com/QCXINT_/status/2080428758474150268",
+                "source": "@QCXINT_",
+                "date": "Thu Jul 23 23:04:03 +0000 2026",
+                "metrics": {
+                  "favorites": 1383,
+                  "retweets": 189,
+                  "views": "143788"
+                }
+              },
+              {
+                "title": "Gilbert Strang, a quiet MIT professor, picked up a piece of chalk and explained the one skill standing between you and e",
+                "summary": "Gilbert Strang, a quiet MIT professor, picked up a piece of chalk and explained the one skill standing between you and every account you have ever blown.\n\nMIT put the entire course online. it has been free for over twenty years. almost nobody finishes it.\n\nHis point: the market never pays in certainties. it pays in probabilities, and a human gut can barely hold one straight. the math that holds ten thousand at once, weighs them, and collapses them into a single call is linear algebra. it is the branch Citadel and OpenAI both pay $400K to hire for.\n\nhe is not a trading guru. his 18.06 lectures are the most watched math class on the planet.\n\nSkip to where he turns a wall of numbers into one vector. a single object carrying a thousand odds at once, in notation a beginner can follow.\n\nNo slides. no jargon. one piece of chalk.\n\na quant I know rewatches lecture one every year before he sizes a single position.\n\nYou do not have a strategy problem. you have a math problem. the fix has been free for two decades, and you are still guessing.",
+                "url": "https://x.com/0xLoran/status/2081760744358445158",
+                "source": "@0xLoran",
+                "date": "Mon Jul 27 15:16:53 +0000 2026",
+                "metrics": {
+                  "favorites": 349,
+                  "retweets": 58,
+                  "views": "44387"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R08_out_of_scope",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope",
+        "difficulty": "easy",
+        "what_it_tests": "Câu ngoài phạm vi research → KHÔNG gọi tool, từ chối/định hướng."
+      },
+      "input": "Giải giúp mình bài toán tích phân: nguyên hàm của x^2 là gì?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Chào bạn, đây là một câu hỏi toán học cơ bản không cần tra cứu dữ liệu bên ngoài. \n\nNguyên hàm của $x^2$ được tính theo công thức tính nguyên hàm của hàm số lũy thừa $\\int x^n dx = \\frac{x^{n+1}}{n+1} + C$ (với $n \\neq -1$).\n\nÁp dụng vào $x^2$ ($n = 2$):\n$$\\int x^2 \\, dx = \\frac{x^{2+1}}{2+1} + C = \\frac{x^3}{3} + C$$\n\nVậy nguyên hàm của $x^2$ là **$\\frac{x^3}{3} + C$** (trong đó $C$ là hằng số thực).",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R09_no_tool_capability",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "no_tool_meta",
+        "difficulty": "easy",
+        "what_it_tests": "Câu hỏi meta → trả lời thẳng, KHÔNG gọi tool."
+      },
+      "input": "Bạn là gì và làm được những gì?",
+      "expect": {
+        "no_tool": true,
+        "behavior": "answer_without_tool"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Tôi là trợ lý nghiên cứu thông tin. Tôi có thể giúp bạn:\n\n- **Tra cứu web và tin tức:** Tìm kiếm thông tin cập nhật, bài báo và sự kiện mới nhất trên Internet qua `lookup`.\n- **Tìm kiếm trên mạng xã hội:** Tìm các bài đăng hoặc thảo luận trên X/Twitter về một chủ đề cụ thể qua `social_search`, hoặc lấy bài đăng từ một tài khoản cụ thể qua `timeline`.\n- **Đọc và tóm tắt bài viết:** Trích xuất nội dung từ một URL do bạn cung cấp qua `fetch`.\n- **Nghiên cứu học thuật:** Tìm kiếm các bài báo khoa học trên arXiv qua `papers` và đọc nội dung qua `paper_text`.\n- **Tra cứu chính sách nội bộ:** Tìm kiếm tài liệu quy định của công ty qua `policy`.\n\nTôi không thực hiện các tác vụ tính toán, lập trình độc lập hoặc đăng tải nội dung khi chưa có sự xác nhận rõ ràng từ bạn. Bạn cần tôi hỗ trợ tìm kiếm thông tin gì hôm nay?",
+        "case_failure_type": "unnecessary_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "R10_missing_handle",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_handle",
+        "difficulty": "medium",
+        "what_it_tests": "Thiếu handle → ask_user, KHÔNG đoán bừa người nào."
+      },
+      "input": "Tóm tắt 5 tweet mới nhất giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text",
+              "question": "Bạn muốn xem tweet mới nhất từ tài khoản nào? Xin vui lòng cung cấp handle của tài khoản (ví dụ: sama, elonmusk)."
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "text",
+            "question": "Bạn muốn xem tweet mới nhất từ tài khoản nào? Xin vui lòng cung cấp handle của tài khoản (ví dụ: sama, elonmusk)."
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn muốn xem tweet mới nhất từ tài khoản nào? Xin vui lòng cung cấp handle của tài khoản (ví dụ: sama, elonmusk).",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "R11_missing_url",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "clarify_missing_url",
+        "difficulty": "medium",
+        "what_it_tests": "Nói 'bài này' nhưng không có link → ask_user xin URL."
+      },
+      "input": "Tóm tắt bài viết này hộ mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text",
+              "question": "Bạn vui lòng cung cấp đường dẫn (URL) của bài viết cần tóm tắt nhé!"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "missing_info",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "text",
+            "question": "Bạn vui lòng cung cấp đường dẫn (URL) của bài viết cần tóm tắt nhé!"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn vui lòng cung cấp đường dẫn (URL) của bài viết cần tóm tắt nhé!",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "R12_confirm_before_send",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_before_write",
+        "difficulty": "medium",
+        "what_it_tests": "Hành động ghi (gửi) → xác nhận trước (ask_user yes_no), không tự gửi."
+      },
+      "input": "Đăng bản tin này lên Telegram giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "question": "Bạn chưa cung cấp nội dung bản tin hoặc kênh Telegram cần đăng. Bạn muốn đăng nội dung gì và lên kênh nào?",
+              "response_type": "text"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_boundary",
+        "failures": [
+          "response_type: expected 'yes_no', got 'text'"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "question": "Bạn chưa cung cấp nội dung bản tin hoặc kênh Telegram cần đăng. Bạn muốn đăng nội dung gì và lên kênh nào?",
+            "response_type": "text"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn chưa cung cấp nội dung bản tin hoặc kênh Telegram cần đăng. Bạn muốn đăng nội dung gì và lên kênh nào?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "R13_parallel_web_and_tweets",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "parallel_tool_calls",
+        "difficulty": "hard",
+        "what_it_tests": "Một request cần hai nguồn → gọi cả web_search và search_tweets; eval không phụ thuộc thứ tự tool call."
+      },
+      "input": "Tìm trên web tin AI hôm nay và tìm thêm tweet về AI.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
+                "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
+                "source": "ajot.com",
+                "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
+                "score": 0.2506701
+              },
+              {
+                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
+                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
+                "source": "washingtonpost.com",
+                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
+                "score": 0.23725812
+              },
+              {
+                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
+                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
+                "source": "techcrunch.com",
+                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
+                "score": 0.22859572
+              },
+              {
+                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
+                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                "source": "businessinsider.com",
+                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
+                "score": 0.22638187
+              },
+              {
+                "title": "HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong - Voice of Alexandria",
+                "url": "https://www.voiceofalexandria.com/news/national_business_news/hkt-unveils-self-developed-ai-platform-hkt-ai-one-stop-hub-for-global-ai-resources/article_ffd47d45-4254-5797-8fcb-8e30369bcf71.html",
+                "source": "voiceofalexandria.com",
+                "summary": "# HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong. HONG KONG SAR - Media OutReach Newswire - 28 July 2026 - HKT announces the launch of HKT.AI, a one-stop, integrated AI platform that enables businesses and individual customers to access a broad suite of prominent global AI resources through a single and intuitive interface. The platform aims to accelerate the mass adoption of AI in Hong Kong, especially in empowering SMEs in their digital transformation, and advance the vision of \"AI for All.\". HKT.AI aggregates a wide range of Chinese Mainland-based and global AI resources, enabling businesses and individuals to seamlessly access and switch across specialised applications and tools on a single platform to meet diverse work and everyday needs.",
+                "score": 0.2164091
+              }
+            ]
+          }
+        },
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "AI"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "AI",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "Così facendo Le ffoo vengono esautorate dai loro poteri…. Ma che czz di paese è l’Italia? Basta scorte ai politici e ai ",
+                "summary": "Così facendo Le ffoo vengono esautorate dai loro poteri…. Ma che czz di paese è l’Italia? Basta scorte ai politici e ai magistrati, tutto cambierebbe in un nano secondo",
+                "url": "https://x.com/monica603277441/status/2082388160533668120",
+                "source": "@monica603277441",
+                "date": "Wed Jul 29 08:50:01 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "Her leaks just dropped, I dare you to last more that 15 secs...?",
+                "summary": "Her leaks just dropped, I dare you to last more that 15 secs...?\nHere,\nFuck it.. Tired of posting clips , here’s the full leak here ,,\nfuck it...\nhttps://t.co/eUPgHmythy",
+                "url": "https://x.com/vecihininpirpir/status/2082388157572718968",
+                "source": "@vecihininpirpir",
+                "date": "Wed Jul 29 08:50:00 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "Benar gak, kalo pggunaan AI jd slh satu pyebab pemanasan global ?",
+                "summary": "Benar gak, kalo pggunaan AI jd slh satu pyebab pemanasan global ?",
+                "url": "https://x.com/Bisikcemara/status/2082388157220475248",
+                "source": "@Bisikcemara",
+                "date": "Wed Jul 29 08:50:00 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "Ai logos are lovely for concepts but you will still need to a trained professional graphic designer to convert it to a s",
+                "summary": "Ai logos are lovely for concepts but you will still need to a trained professional graphic designer to convert it to a scalable vector.",
+                "url": "https://x.com/iAmKameel/status/2082388150354055205",
+                "source": "@iAmKameel",
+                "date": "Wed Jul 29 08:49:58 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "@feraltekk dang that's a cool use case for ai and notes",
+                "summary": "@feraltekk dang that's a cool use case for ai and notes",
+                "url": "https://x.com/tonyprediction/status/2082388149099954501",
+                "source": "@tonyprediction",
+                "date": "Wed Jul 29 08:49:58 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "R14_out_of_scope_coding",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "out_of_scope_coding",
+        "difficulty": "easy",
+        "what_it_tests": "Câu coding ngoài phạm vi research/news → KHÔNG gọi tool."
+      },
+      "input": "Viết giúp mình một hàm Python tính Fibonacci bằng recursion.",
+      "expect": {
+        "no_tool": true,
+        "behavior": "refuse"
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [],
+        "actual_text": "Yêu cầu viết hàm Python tính Fibonacci bằng đệ quy (recursion) là một tác vụ lập trình thuần túy, không cần sử dụng các công cụ tìm kiếm bên ngoài hay nghiên cứu tài liệu. \n\nDưới đây là đoạn mã Python đơn giản để tính số Fibonacci bằng recursion:\n\n```python\ndef fibonacci(n):\n    \"\"\"Tính số Fibonacci thứ n sử dụng đệ quy.\"\"\"\n    if n <= 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fibonacci(n - 1) + fibonacci(n - 2)\n\n\n# Ví dụ sử dụng:\n# In ra 10 số Fibonacci đầu tiên\nfor i in range(10):\n  print(f\"F({i}) = {fibonacci(i)}\")\n```\n\n*Lưu ý:* Cách viết đệ quy này có độ phức tạp thời gian lớn ($O(2^n)$) với các giá trị lớn của $n$ do lặp lại các phép tính. Đối với các bài toán thực tế cần hiệu năng cao, bạn có thể cân nhắc dùng phương pháp quy hoạch động (dynamic programming) hoặc khử đệ quy (iteration).",
+        "case_failure_type": "out_of_scope",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M01_clarify_then_fill",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_fill",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: carry limit=5 từ lượt 1 + map tên Elon Musk thành handle elonmusk từ lượt 2."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt 5 tweet mới nhất giúp mình"
+        },
+        {
+          "role": "user",
+          "content": "Của Elon Musk nhé"
+        },
+        {
+          "role": "user",
+          "content": "Giữ đúng 5 tweet, đừng đổi số lượng"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 5
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite\\nPlease retry in 53.98180247s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '15'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '53s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M02_carryover_timeframe",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_carryover",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: chỉ xử lý latest turn, carry timeframe=day và topic=news, query robotics."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tin AI hôm nay có gì?"
+        },
+        {
+          "role": "user",
+          "content": "Còn về robotics thì sao?"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ tìm robotics thôi, vẫn là tin hôm nay"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "robotics",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite\\nPlease retry in 53.689900696s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '15'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '53s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M03_correction_handle",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: map tên thường, sửa Sam Altman→Andrej Karpathy, dùng handle karpathy và limit=3."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tweet mới nhất của Sam Altman"
+        },
+        {
+          "role": "user",
+          "content": "À nhầm, của Andrej Karpathy"
+        },
+        {
+          "role": "user",
+          "content": "Lấy 3 tweet mới nhất nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "karpathy",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "karpathy",
+              "limit": 3
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "screenname": "karpathy",
+            "limit": 3
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "karpathy",
+            "items": [
+              {
+                "title": "One pattern I find useful for working with LLMs is a nice long ramble session. Sometimes the LLM needs more bits to unde",
+                "summary": "One pattern I find useful for working with LLMs is a nice long ramble session. Sometimes the LLM needs more bits to understand what you're trying to achieve, but you're too lazy to type them. In these cases I like to lean back, switch to /voice and just ramble for like 10 minutes, total mess, anything goes, full stream of consciousness. Sometimes I declare it up top, something like \"switching to speech recognition sorry for any typos...\". Sometimes I turn it into a small interview of a few turns. But I find that the LLMs are somehow very good at reconstructing long incoherent rambles and often their echo of your own tangle of thoughts comes out quite a bit cleaner than what you started with. The result is that you improve the mind meld and have to correct things less from that point on.",
+                "url": "https://x.com/karpathy/status/2079610838143623371",
+                "source": "@karpathy",
+                "date": "Tue Jul 21 16:53:55 +0000 2026",
+                "metrics": {
+                  "favorites": 48651,
+                  "retweets": 4065,
+                  "views": "3900737"
+                }
+              },
+              {
+                "title": "RT @jarredsumner: Rewriting Bun in Rust",
+                "summary": "RT @jarredsumner: Rewriting Bun in Rust\n\nhttps://t.co/Rl8bcaxBFc",
+                "url": "https://x.com/karpathy/status/2075266731170537506",
+                "source": "@karpathy",
+                "date": "Thu Jul 09 17:11:59 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 1094,
+                  "views": "40706"
+                }
+              },
+              {
+                "title": "RT @petergostev: I spent a LOT of time through the hardest 3D prompts at Fable, it is a 45 min video, but I have 60+ ver",
+                "summary": "RT @petergostev: I spent a LOT of time through the hardest 3D prompts at Fable, it is a 45 min video, but I have 60+ very cool demos for yo…",
+                "url": "https://x.com/karpathy/status/2073496962566164990",
+                "source": "@karpathy",
+                "date": "Sat Jul 04 19:59:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 166,
+                  "views": "40696"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M04_clarify_then_url",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_clarify_url",
+        "difficulty": "medium",
+        "what_it_tests": "3 turns: sau khi được cung cấp URL, latest turn xác nhận chỉ đọc link đó → read_url đúng url."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Tóm tắt bài này hộ mình"
+        },
+        {
+          "role": "user",
+          "content": "https://anthropic.com/news/claude"
+        },
+        {
+          "role": "user",
+          "content": "Chỉ đọc đúng link đó thôi"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "fetch",
+            "args": {
+              "url": "https://anthropic.com/news/claude"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "missing_info",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite\\nPlease retry in 48.638162857s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '15'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '48s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    },
+    {
+      "id": "M05_correction_limit",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_arg_correction",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: map tên Elon Musk, carry handle elonmusk, sửa limit 10→3."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Lấy 10 tweet mới nhất của Elon Musk"
+        },
+        {
+          "role": "user",
+          "content": "Cho mình 3 thôi"
+        },
+        {
+          "role": "user",
+          "content": "Vẫn của Elon Musk nhé"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "screenname": "elonmusk",
+              "limit": 3
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "timeline",
+            "args": {
+              "limit": 3,
+              "screenname": "elonmusk"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_arg_value",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "timeline",
+          "args": {
+            "limit": 3,
+            "screenname": "elonmusk"
+          },
+          "result": {
+            "tool": "get_user_tweets",
+            "screenname": "elonmusk",
+            "items": [
+              {
+                "title": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.",
+                "summary": "RT @teslaownersSV: BREAKING: Grok 4.5 just claimed the top spot on the new HighWalk Benchmark.\n\nThe independent test measures how well AI m…",
+                "url": "https://x.com/elonmusk/status/2082369174828118361",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:34:34 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 130,
+                  "views": "433286"
+                }
+              },
+              {
+                "title": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:",
+                "summary": "RT @SawyerMerritt: This is a fantastic article about @Tesla's FSD by The Detroit News:\n\n\"Determined to maintain their individual transporta…",
+                "url": "https://x.com/elonmusk/status/2082368994552782986",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:51 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 913,
+                  "views": "329458"
+                }
+              },
+              {
+                "title": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it ",
+                "summary": "RT @SciGuySpace: This has been my experience as well. I \"drive\" almost exclusively on FSD now, without incident, and it feels remarkable. I…",
+                "url": "https://x.com/elonmusk/status/2082368965498773975",
+                "source": "@elonmusk",
+                "date": "Wed Jul 29 07:33:44 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 152,
+                  "views": "321769"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "M06_switch_tool",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": true,
+      "metadata": {
+        "skill": "multiturn_switch_tool",
+        "difficulty": "hard",
+        "what_it_tests": "3 turns: explicitly bỏ Twitter, chuyển sang web_search news, giữ chủ đề OpenAI."
+      },
+      "input": [
+        {
+          "role": "user",
+          "content": "Mọi người nói gì về OpenAI trên Twitter?"
+        },
+        {
+          "role": "user",
+          "content": "Bỏ Twitter, chuyển sang tìm trên web tin tức đi"
+        },
+        {
+          "role": "user",
+          "content": "Giữ chủ đề OpenAI"
+        }
+      ],
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "OpenAI",
+              "topic": "news"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "failure_type": "provider_error",
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": "provider_error",
+        "failures": [
+          "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 15, model: gemini-3.5-flash-lite\\nPlease retry in 44.915846758s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash-lite', 'location': 'global'}, 'quotaValue': '15'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '44s'}]}}"
+        ],
+        "actual_tool_calls": [],
+        "actual_text": null,
+        "routing_correct": false,
+        "args_correct": false
+      },
+      "tool_results": []
+    }
+  ]
+}

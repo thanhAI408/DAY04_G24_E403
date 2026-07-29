@@ -1,0 +1,281 @@
+{
+  "run_id": "v2-smoke_B_base_gemini_20260729T155815675451",
+  "version": "v2-smoke",
+  "artifact_version": "v2-smoke+p9353e8c8e6ed+t7ebc4445fb86",
+  "prompt_hash": "9353e8c8e6edfd1052d34ad6a361a791077e9eeb7408280550f2763706662475",
+  "tools_hash": "7ebc4445fb8608245b43a9dd1c0f1c5041e5f6eea4fbf64487df9dbeb10c1956",
+  "phase": "B",
+  "suite": "base",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "system_prompt": "C:\\Users\\admin\\Documents\\VinUni\\DAY04_G24_E403\\starter_v0\\artifacts\\system_prompt.md",
+  "tools": "C:\\Users\\admin\\Documents\\VinUni\\DAY04_G24_E403\\starter_v0\\artifacts\\tools.yaml",
+  "eval_cases": "data\\eval_smoke_r12_r13.json",
+  "dataset_id": "day04_v2_research_base",
+  "dataset_role": "base",
+  "description": "Core eval cho research agent: routing đúng tool + đúng args, hỏi lại khi thiếu (ask_user), xác nhận trước khi gửi, và xử lý câu ngoài phạm vi / không cần tool. Chấm trên tool_calls + args (subset). KHÔNG sửa file này — chỉ thêm case vào eval_group.json.",
+  "generated_at": "2026-07-29T15:58:15",
+  "summary": {
+    "total_cases": 2,
+    "measured_cases": 2,
+    "provider_error_cases": 0,
+    "passed_cases": 1,
+    "case_accuracy": 0.5,
+    "tool_routing_accuracy": 1.0,
+    "argument_accuracy": 0.5,
+    "multiturn_accuracy": null,
+    "failure_counts": {
+      "wrong_boundary": 1
+    },
+    "observed_mismatch_counts": {
+      "wrong_arg_value": 1
+    }
+  },
+  "results": [
+    {
+      "id": "R12_confirm_before_send",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "confirm_before_write",
+        "difficulty": "medium",
+        "what_it_tests": "Hành động ghi (gửi) → xác nhận trước (ask_user yes_no), không tự gửi."
+      },
+      "input": "Đăng bản tin này lên Telegram giúp mình",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "yes_no"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": false,
+        "routing_correct": true,
+        "args_correct": false,
+        "actual_tool_calls": [
+          {
+            "name": "clarify",
+            "args": {
+              "response_type": "text",
+              "question": "Bạn muốn đăng ký nội dung gì và gửi đến đâu trên Telegram?"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_boundary",
+        "observed_mismatch": "wrong_arg_value",
+        "failure_type": "wrong_boundary",
+        "failures": [
+          "response_type: expected 'yes_no', got 'text'"
+        ]
+      },
+      "tool_results": [
+        {
+          "tool": "clarify",
+          "args": {
+            "response_type": "text",
+            "question": "Bạn muốn đăng ký nội dung gì và gửi đến đâu trên Telegram?"
+          },
+          "result": {
+            "tool": "ask_user",
+            "question": "Bạn muốn đăng ký nội dung gì và gửi đến đâu trên Telegram?",
+            "response_type": "text",
+            "options": [],
+            "awaiting_user": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "R13_parallel_web_and_tweets",
+      "phase": "B",
+      "suite": "base",
+      "case_suite": "base",
+      "is_multiturn": false,
+      "metadata": {
+        "skill": "parallel_tool_calls",
+        "difficulty": "hard",
+        "what_it_tests": "Một request cần hai nguồn → gọi cả web_search và search_tweets; eval không phụ thuộc thứ tự tool call."
+      },
+      "input": "Tìm trên web tin AI hôm nay và tìm thêm tweet về AI.",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "query": "AI",
+              "topic": "news",
+              "timeframe": "day"
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI"
+            }
+          }
+        ]
+      },
+      "result": {
+        "passed": true,
+        "routing_correct": true,
+        "args_correct": true,
+        "actual_tool_calls": [
+          {
+            "name": "lookup",
+            "args": {
+              "timeframe": "day",
+              "query": "AI",
+              "topic": "news"
+            }
+          },
+          {
+            "name": "social_search",
+            "args": {
+              "query": "AI",
+              "search_type": "Latest"
+            }
+          }
+        ],
+        "actual_text": null,
+        "case_failure_type": "wrong_tool",
+        "observed_mismatch": null,
+        "failure_type": null,
+        "failures": []
+      },
+      "tool_results": [
+        {
+          "tool": "lookup",
+          "args": {
+            "timeframe": "day",
+            "query": "AI",
+            "topic": "news"
+          },
+          "result": {
+            "tool": "web_search",
+            "query": "AI",
+            "topic": "news",
+            "timeframe": "day",
+            "items": [
+              {
+                "title": "5U AI scales up new digital workforce platform - American Journal of Transportation",
+                "url": "https://www.ajot.com/news/5u-ai-scales-up-new-digital-workforce-platform",
+                "source": "ajot.com",
+                "summary": "“We are not building another chatbot that answers questions and disappears, we are building AI Workers that understand freight operations, carry out the work, and capture the reasoning behind every decision, so teams can scale their knowledge as well as their capacity.”. 5U AI works inside existing freight systems and uses multi-agent AI trained for logistics workflows, including the complex exceptions and manual decisions that make forwarding operations difficult to automate with generic AI tools or legacy automation. The company is already live with forwarders and carriers across Europe, including with TCI International Logistics, where its AI Workers are being used across air and ocean freight operations. 5U AI is growing its team as part of the scale-up, with plans to hire across product, engineering, operations, commercial, and customer functions. “AI is one of the most exciting developments logistics has seen for a generation, but its value will depend on people who understand the industry and want to build practical tools that solve real operational problems,” said Abik.",
+                "score": 0.2506701
+              },
+              {
+                "title": "Senate confirms Jay Clayton as new intelligence czar - The Washington Post",
+                "url": "https://www.washingtonpost.com/national-security/2026/07/28/senate-confirms-jay-clayton-new-intelligence-czar/",
+                "source": "washingtonpost.com",
+                "summary": "# Senate confirms Jay Clayton as new intelligence czar. The Senate confirmed Jay Clayton as director of national intelligence, ending the acting tenure of Bill Pulte, a housing official and Trump loyalist. Jay Clayton appears before the Senate Intelligence Committee earlier this month during a hearing on his nomination to serve as director of national intelligence. The Senate confirmed Jay Clayton as the director of national intelligence Tuesday, ending the tenure of Bill Pulte, a housing official and Trump loyalist, who held the role for more than a month. The 51-to-47 vote was more partisan than expected after Trump nominated Clayton in June. AI & Tech Brief: Reflection AI arrives in Washington. AI & Tech Brief: Anthropic’s army of AI integrators. AI & Tech Brief: The AI gatekeepers. AI & Tech Brief: The techno-optimist’s case. AI & Tech Brief: GOP Chair Eyes AI Query Red Flags. AI & Tech Brief: Dem caucuses to meet on AI.",
+                "score": 0.23725812
+              },
+              {
+                "title": "Moburst develops AI engine optimization capabilities for established companies - TechCrunch",
+                "url": "https://techcrunch.com/press-release/moburst-develops-ai-engine-optimization-capabilities-for-established-companies/",
+                "source": "techcrunch.com",
+                "summary": "Mobile growth agency Moburst has built out a dedicated AI Engine Optimization practice aimed at established companies with existing app portfolios, betting that the category still lacks agencies with real depth rather than a rebranded service page. AI Engine Optimization, more commonly abbreviated AEO for Answer Engine Optimization, is the practice of structuring a brand’s content and web presence so AI systems such as ChatGPT, Perplexity, and Google’s AI Overviews can confidently cite it when answering a user’s question directly, rather than showing a ranked list of links. For established companies vetting an AEO partner, the practical test is whether the agency can point to specific app-store-side work, not just web content changes, and whether it can describe a concrete process for reconciling inconsistent brand descriptions across many independent sources rather than treating that as someone else’s problem.",
+                "score": 0.22859572
+              },
+              {
+                "title": "1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development' - Business Insider",
+                "url": "https://www.businessinsider.com/ai-open-letter-automated-development-2026-7",
+                "source": "businessinsider.com",
+                "summary": "# Over 1,100 AI workers sign letter asking US to support tools that 'pace the frontier of automated AI development'. Senior officials at some of the nation's leading AI companies say it's time for the federal government to find a way to put the brakes on AI development if it's needed. \"We request that the U.S. government support an international effort to develop the technical and governance tools needed to deliberately pace the frontier of automated AI development,\" reads an open letter signed by more than 1,100 AI workers from companies including OpenAI, Anthropic, Google, and Meta. The letter zeroes in on \"automated AI development,\" which refers to when AI will be capable of developing itself, something the industry calls \"Recursive Self-Improvement.\" Anthropic has shared that its Claude models are quickly approaching that threshold. Look out for an alert in your inbox the next time a new story is published!",
+                "score": 0.22638187
+              },
+              {
+                "title": "HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong - Voice of Alexandria",
+                "url": "https://www.voiceofalexandria.com/news/national_business_news/hkt-unveils-self-developed-ai-platform-hkt-ai-one-stop-hub-for-global-ai-resources/article_ffd47d45-4254-5797-8fcb-8e30369bcf71.html",
+                "source": "voiceofalexandria.com",
+                "summary": "# HKT unveils self-developed AI platform HKT.AI One-stop hub for global AI resources, advancing \"AI for All\" in Hong Kong. HONG KONG SAR - Media OutReach Newswire - 28 July 2026 - HKT announces the launch of HKT.AI, a one-stop, integrated AI platform that enables businesses and individual customers to access a broad suite of prominent global AI resources through a single and intuitive interface. The platform aims to accelerate the mass adoption of AI in Hong Kong, especially in empowering SMEs in their digital transformation, and advance the vision of \"AI for All.\". HKT.AI aggregates a wide range of Chinese Mainland-based and global AI resources, enabling businesses and individuals to seamlessly access and switch across specialised applications and tools on a single platform to meet diverse work and everyday needs.",
+                "score": 0.2164091
+              }
+            ]
+          }
+        },
+        {
+          "tool": "social_search",
+          "args": {
+            "query": "AI",
+            "search_type": "Latest"
+          },
+          "result": {
+            "tool": "search_tweets",
+            "query": "AI",
+            "search_type": "Latest",
+            "items": [
+              {
+                "title": "@aroasccp Acho que 99% vai dizer que o @AthleticoPR não conseguiria tal feito de vencer o Brasileiro 2026, ",
+                "summary": "@aroasccp Acho que 99% vai dizer que o @AthleticoPR não conseguiria tal feito de vencer o Brasileiro 2026, \nMas ai que tá, justamente indo como azarão pode acabar chegando em primeiro na tabela na hora certa e ficar com a taça",
+                "url": "https://x.com/_SuperCAP_/status/2082390141113368605",
+                "source": "@_SuperCAP_",
+                "date": "Wed Jul 29 08:57:53 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "@vnteless @espiritodporco Quem marca é Deus aí 😂😂😂😂",
+                "summary": "@vnteless @espiritodporco Quem marca é Deus aí 😂😂😂😂",
+                "url": "https://x.com/xiiiiii898989/status/2082390138848514495",
+                "source": "@xiiiiii898989",
+                "date": "Wed Jul 29 08:57:52 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "@ZetoGroovin さんの、深度マップでダンス作る方法、めっちゃ参考になりました！ポストを参考に久しぶりにダンス動画作ったら、腹の肉がプルンプルンでびっくり笑",
+                "summary": "@ZetoGroovin さんの、深度マップでダンス作る方法、めっちゃ参考になりました！ポストを参考に久しぶりにダンス動画作ったら、腹の肉がプルンプルンでびっくり笑\n私は普段もちろん踊りませんが、おじちゃんの分身体が、腹の肉を震わせて踊ってる動画ができて満足です。 https://t.co/RpjQiCb4N4",
+                "url": "https://x.com/ai_ojichan/status/2082390126639112678",
+                "source": "@ai_ojichan",
+                "date": "Wed Jul 29 08:57:49 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "@BelkiKiama96761 This is AI",
+                "summary": "@BelkiKiama96761 This is AI",
+                "url": "https://x.com/JaphetFuti/status/2082390125330288792",
+                "source": "@JaphetFuti",
+                "date": "Wed Jul 29 08:57:49 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              },
+              {
+                "title": "@FreeViralKit Love this!  Free  AI  huge win for creators",
+                "summary": "@FreeViralKit Love this!  Free  AI  huge win for creators",
+                "url": "https://x.com/ReenaTech0/status/2082390121043923080",
+                "source": "@ReenaTech0",
+                "date": "Wed Jul 29 08:57:48 +0000 2026",
+                "metrics": {
+                  "favorites": 0,
+                  "retweets": 0,
+                  "views": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
