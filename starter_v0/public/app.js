@@ -1,6 +1,15 @@
 const $ = (selector) => document.querySelector(selector);
 let history = [];
 
+document.querySelectorAll(".tab").forEach((tab) => {
+  tab.onclick = () => {
+    document.querySelectorAll(".tab").forEach((item) => item.classList.remove("active"));
+    document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
+    tab.classList.add("active");
+    $("#" + tab.dataset.tab).classList.add("active");
+  };
+});
+
 function addBubble(text, kind) {
   const bubble = document.createElement("div");
   bubble.className = `bubble ${kind}`;
